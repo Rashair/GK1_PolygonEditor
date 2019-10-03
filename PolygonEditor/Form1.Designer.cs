@@ -34,14 +34,11 @@
             this.EditionGroupBox = new System.Windows.Forms.GroupBox();
             this.ClearGraphButton = new System.Windows.Forms.Button();
             this.RemoveVertexButton = new System.Windows.Forms.Button();
-            this.ColorBox = new System.Windows.Forms.PictureBox();
-            this.ColorButton = new System.Windows.Forms.Button();
             this.bitMap = new System.Windows.Forms.PictureBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.EditionGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ColorBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bitMap)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,8 +60,6 @@
             resources.ApplyResources(this.EditionGroupBox, "EditionGroupBox");
             this.EditionGroupBox.Controls.Add(this.ClearGraphButton);
             this.EditionGroupBox.Controls.Add(this.RemoveVertexButton);
-            this.EditionGroupBox.Controls.Add(this.ColorBox);
-            this.EditionGroupBox.Controls.Add(this.ColorButton);
             this.EditionGroupBox.Name = "EditionGroupBox";
             this.EditionGroupBox.TabStop = false;
             // 
@@ -81,20 +76,6 @@
             this.RemoveVertexButton.Name = "RemoveVertexButton";
             this.RemoveVertexButton.UseVisualStyleBackColor = true;
             this.RemoveVertexButton.Click += new System.EventHandler(this.RemoveVertexButton_Click);
-            // 
-            // ColorBox
-            // 
-            resources.ApplyResources(this.ColorBox, "ColorBox");
-            this.ColorBox.Name = "ColorBox";
-            this.ColorBox.TabStop = false;
-            this.ColorBox.Paint += new System.Windows.Forms.PaintEventHandler(this.ColorBox_Paint);
-            // 
-            // ColorButton
-            // 
-            resources.ApplyResources(this.ColorButton, "ColorButton");
-            this.ColorButton.Name = "ColorButton";
-            this.ColorButton.UseVisualStyleBackColor = true;
-            this.ColorButton.Click += new System.EventHandler(this.ColorButton_Click);
             // 
             // bitMap
             // 
@@ -120,7 +101,6 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.EditionGroupBox.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.ColorBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bitMap)).EndInit();
             this.ResumeLayout(false);
 
@@ -132,9 +112,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.GroupBox EditionGroupBox;
         private System.Windows.Forms.PictureBox bitMap;
-        private System.Windows.Forms.Button ColorButton;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.PictureBox ColorBox;
         private System.Windows.Forms.Button RemoveVertexButton;
         private System.Windows.Forms.Button ClearGraphButton;
     }

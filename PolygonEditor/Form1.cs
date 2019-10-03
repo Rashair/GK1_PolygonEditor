@@ -46,6 +46,11 @@ namespace GraphEditor
                 this.point = point;
             }
 
+            public Vertex(int x, int y)
+            {
+                this.point = new Point(x, y);
+            }
+
             public override bool Equals(object obj)
             {
                 return obj is Vertex vertex &&
@@ -59,6 +64,7 @@ namespace GraphEditor
                 return hashCode;
             }
         };
+        // Sth sorted
         private List<Vertex> Vertices;
         private List<HashSet<Vertex>> Edges;
 
@@ -66,11 +72,29 @@ namespace GraphEditor
         {
             InitializeComponent();
 
-            canvas = new Bitmap(bitMap.Size.Width, bitMap.Size.Height);
+            var bitmapSize = bitMap.Size;
+            canvas = new Bitmap(bitmapSize.Width, bitmapSize.Height);
             rectangle = new Rectangle() { Size = new Size(vertexRadius, vertexRadius) };
-            Vertices = new List<Vertex>();
-            Edges = new List<HashSet<Vertex>>();
+
+
             resources = new ComponentResourceManager(typeof(Form1));
+
+            // Adding default polygon
+            int x1 = bitmapSize.Width / 4;
+            int y1 = bitmapSize.Height / 4;
+            int length = bitmapSize.Width / 4;
+            Vertices = new List<Vertex> {
+                new Vertex(x1, y1),
+                new Vertex(x1 + length, y1),
+                new Vertex(x1 + length, y1 + length),
+                new Vertex(x1, y1 + length)
+            };
+            Edges = new List<HashSet<Vertex>> {
+                new HashSet<Vertex> {Vertices[1]},
+                new HashSet<Vertex> {Vertices[2]},
+                new HashSet<Vertex> {Vertices[3]},
+                new HashSet<Vertex> {Vertices[0]}
+            };
         }
 
         private void BitMap_Paint(object sender, PaintEventArgs e)
@@ -87,28 +111,20 @@ namespace GraphEditor
                     }
                 }
 
+                if (Vertices.Count > 0)
+                {
+                    canvasGraphics.FillPolygon(Brushes.Green, Vertices.Select(v => v.point).ToArray());
+                }
+
                 for (int i = 0; i < Vertices.Count; ++i)
                 {
                     rectangle.Location = Vertices[i].point + locationAdjustment;
-                    canvasGraphics.FillEllipse(Brushes.White, rectangle);
-                    if (Vertices[i] == selectedVertex)
-                    {
-                        var prevColor = pen.Color;
-                        pen.Color = Color.Red;
-                        pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-                        canvasGraphics.FillEllipse(pen.Brush, rectangle);
-                        pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Solid;
-                        pen.Color = prevColor;
-                    }
-                    else
-                    {
-                        canvasGraphics.FillEllipse(pen.Brush, rectangle);
-                    }
+                    canvasGraphics.FillEllipse(Vertices[i] == selectedVertex ? 
+                        Brushes.Red : Brushes.Black, 
+                        rectangle);
                 }
             }
             e.Graphics.DrawImage(canvas, 0, 0);
-
-            pen.Color = colorDialog1.Color;
 
             RemoveVertexButton.Enabled = selectedVertex != null;
         }
@@ -241,26 +257,7 @@ namespace GraphEditor
         }
 
         // Right section
-
-        private void ColorButton_Click(object sender, EventArgs e)
-        {
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                pen.Color = colorDialog1.Color;
-                ColorBox.Invalidate();
-
-                if (selectedVertex != null)
-                {
-                    bitMap.Invalidate();
-                }
-            }
-        }
-
-        private void ColorBox_Paint(object sender, PaintEventArgs e)
-        {
-            ColorBox.BackColor = pen.Color;
-        }
-
+        /***************************************************************************************/
         private void RemoveVertexButton_Click(object sender, EventArgs e)
         {
             RemoveVertex();
@@ -290,8 +287,11 @@ namespace GraphEditor
 
         private void ClearGraph()
         {
-            Vertices.Clear();
-            Edges.Clear();
+            Vertices.RemoveRange(3, Vertices.Count - 3);
+            Edges.RemoveRange(3, Vertices.Count - 3);
+            Edges[2].Clear();
+            Edges[2].Add(Vertices[0]);
+
             current = Action.None;
             selectedVertex = null;
             RemoveVertexButton.Enabled = false;
