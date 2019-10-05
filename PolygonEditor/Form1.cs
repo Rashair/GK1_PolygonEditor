@@ -6,17 +6,16 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Resources;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
+using Input = System.Windows.Input;
 
 namespace GraphEditor
 {
     public partial class Form1 : Form
     {
         private const int vertexRadius = 15;
-        private const double eps = 1e-6;
+        private const double eps = 0.5;
 
         private static readonly StringFormat format = new StringFormat()
         {
@@ -31,7 +30,6 @@ namespace GraphEditor
         private enum Action { None, Move }
         private Action current;
 
-        private Point lastPosition;
         private Size previousLocation;
         private Vertex selectedVertex;
         private Rectangle rectangle;
@@ -94,7 +92,6 @@ namespace GraphEditor
 
                 if (vertices.Count > 0)
                 {
-                    ;
                     canvasGraphics.FillPolygon(Brushes.Green, vertices.Select(v => v.point).ToArray());
                 }
 
@@ -115,16 +112,23 @@ namespace GraphEditor
         {
             if (e.Button == MouseButtons.Right)
             {
-                lastPosition = new Point(e.X, e.Y);
-                if (selectedVertex != null)
+                var lastPosition = new Point(e.X, e.Y);
+                if (Input.Keyboard.IsKeyDown(Input.Key.LeftCtrl))
                 {
-                    bitMap.Invalidate();
+                    
                 }
-
-                selectedVertex = ClosestOrDefault();
-                if (selectedVertex != null)
+                else
                 {
-                    bitMap.Invalidate();
+                    if (selectedVertex != null)
+                    {
+                        bitMap.Invalidate();
+                    }
+
+                    selectedVertex = ClosestOrDefault(lastPosition);
+                    if (selectedVertex != null)
+                    {
+                        bitMap.Invalidate();
+                    }
                 }
             }
         }
@@ -133,11 +137,11 @@ namespace GraphEditor
         {
             if (e.Button == MouseButtons.Left)
             {
-                lastPosition = new Point(e.X, e.Y);
-                Vertex vertex = ClosestOrDefault();
+                var lastPosition = new Point(e.X, e.Y);
+                Vertex vertex = ClosestOrDefault(lastPosition);
                 if (vertex == null)
                 {
-                    LinkedListNode<Vertex> prevVertex = GetPreviousVertex();
+                    LinkedListNode<Vertex> prevVertex = GetPreviousVertex(lastPosition);
                     if (prevVertex != null)
                     {
                         var v1 = prevVertex.Value;
@@ -158,15 +162,16 @@ namespace GraphEditor
             }
         }
 
-        private Vertex ClosestOrDefault()
+        private Vertex ClosestOrDefault(Point position)
         {
             Vertex result = null;
             double minDist = double.PositiveInfinity;
             foreach (Vertex v in vertices)
             {
-                if (VerticesIntersect(v.point, lastPosition) || v.point.Equals(lastPosition))
+                if (Geometry.VerticesIntersect(v.point, position, vertexRadius) || 
+                    v.point.Equals(position))
                 {
-                    double currDist = Distance(v.point, lastPosition);
+                    double currDist = Geometry.Distance(v.point, position);
                     if (minDist > currDist)
                     {
                         minDist = currDist;
@@ -179,22 +184,19 @@ namespace GraphEditor
         }
 
 
-        private LinkedListNode<Vertex> GetPreviousVertex()
+        private LinkedListNode<Vertex> GetPreviousVertex(Point position)
         {
-            int i = 0;
             for(var currentNode = vertices.First; currentNode != null; currentNode = currentNode.Next)
             {
                 var vertex = currentNode.Value;
-                double d1 = Distance(vertex.point, lastPosition);
-                double d2 = Distance(lastPosition, vertex.next.point);
-                double d = Distance(vertex.point, vertex.next.point);
+                double d1 = Geometry.Distance(vertex.point, position);
+                double d2 = Geometry.Distance(position, vertex.next.point);
+                double d = Geometry.Distance(vertex.point, vertex.next.point);
 
-                if (d1 + d2 - d < eps)
+                if (Math.Abs(d1 + d2 - d) < eps)
                 {
                     return (currentNode);
                 }
-
-                ++i;
             }
 
             return (null);
@@ -242,16 +244,7 @@ namespace GraphEditor
             }
         }
 
-        private bool VerticesIntersect(Point p1, Point p2)
-        {
-            return (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y)
-                <= vertexRadius * vertexRadius;
-        }
 
-        private double Distance(Point p1, Point p2)
-        {
-            return (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y);
-        }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
