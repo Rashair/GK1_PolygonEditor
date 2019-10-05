@@ -16,6 +16,8 @@ namespace GraphEditor
     public partial class Form1 : Form
     {
         private const int vertexRadius = 15;
+        private const double eps = 1e-6;
+
         private static readonly StringFormat format = new StringFormat()
         {
             LineAlignment = StringAlignment.Center,
@@ -32,41 +34,11 @@ namespace GraphEditor
         private Point lastPosition;
         private Size previousLocation;
         private Vertex selectedVertex;
-        private int selectedVertexIndex;
         private Rectangle rectangle;
 
         private Bitmap canvas;
 
-        private class Vertex
-        {
-            public Point point;
-
-            public Vertex(Point point)
-            {
-                this.point = point;
-            }
-
-            public Vertex(int x, int y)
-            {
-                this.point = new Point(x, y);
-            }
-
-            public override bool Equals(object obj)
-            {
-                return obj is Vertex vertex &&
-                       point.Equals(vertex.point);
-            }
-
-            public override int GetHashCode()
-            {
-                var hashCode = -1667306863;
-                hashCode = hashCode * -1521134295 + point.GetHashCode();
-                return hashCode;
-            }
-        };
-        // Sth sorted
-        private List<Vertex> Vertices;
-        private List<HashSet<Vertex>> Edges;
+        private LinkedList<Vertex> vertices;
 
         public Form1()
         {
@@ -83,18 +55,30 @@ namespace GraphEditor
             int x1 = bitmapSize.Width / 4;
             int y1 = bitmapSize.Height / 4;
             int length = bitmapSize.Width / 4;
-            Vertices = new List<Vertex> {
-                new Vertex(x1, y1),
-                new Vertex(x1 + length, y1),
-                new Vertex(x1 + length, y1 + length),
-                new Vertex(x1, y1 + length)
-            };
-            Edges = new List<HashSet<Vertex>> {
-                new HashSet<Vertex> {Vertices[1]},
-                new HashSet<Vertex> {Vertices[2]},
-                new HashSet<Vertex> {Vertices[3]},
-                new HashSet<Vertex> {Vertices[0]}
-            };
+
+            var v1 = new Vertex(x1, y1);
+            var v2 = new Vertex(x1 + length, y1);
+            var v3 = new Vertex(x1 + length, y1 + length);
+            var v4 = new Vertex(x1, y1 + length);
+
+            v1.next = v2;
+            v1.prev = v4;
+
+            v2.next = v3;
+            v2.prev = v1;
+
+            v3.next = v4;
+            v3.prev = v2;
+
+            v4.next = v1;
+            v4.prev = v3;
+
+            vertices = new LinkedList<Vertex>();
+
+            vertices.AddLast(v1);
+            vertices.AddLast(v2);
+            vertices.AddLast(v3);
+            vertices.AddLast(v4);
         }
 
         private void BitMap_Paint(object sender, PaintEventArgs e)
@@ -103,24 +87,22 @@ namespace GraphEditor
             using (Graphics canvasGraphics = Graphics.FromImage(canvas))
             {
                 canvasGraphics.Clear(Color.White);
-                for (int i = 0; i < Vertices.Count; ++i)
+                foreach (Vertex v in vertices)
                 {
-                    foreach (Vertex vertex in Edges[i])
-                    {
-                        canvasGraphics.DrawLine(edgePen, Vertices[i].point, vertex.point);
-                    }
+                    canvasGraphics.DrawLine(edgePen, v.point, v.next.point);
                 }
 
-                if (Vertices.Count > 0)
+                if (vertices.Count > 0)
                 {
-                    canvasGraphics.FillPolygon(Brushes.Green, Vertices.Select(v => v.point).ToArray());
+                    ;
+                    canvasGraphics.FillPolygon(Brushes.Green, vertices.Select(v => v.point).ToArray());
                 }
 
-                for (int i = 0; i < Vertices.Count; ++i)
+                foreach (Vertex v in vertices)
                 {
-                    rectangle.Location = Vertices[i].point + locationAdjustment;
-                    canvasGraphics.FillEllipse(Vertices[i] == selectedVertex ? 
-                        Brushes.Red : Brushes.Black, 
+                    rectangle.Location = v.point + locationAdjustment;
+                    canvasGraphics.FillEllipse(v == selectedVertex ?
+                        Brushes.Red : Brushes.Black,
                         rectangle);
                 }
             }
@@ -129,48 +111,93 @@ namespace GraphEditor
             RemoveVertexButton.Enabled = selectedVertex != null;
         }
 
-
         private void BitMap_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                lastPosition = new Point(e.X, e.Y);
+                if (selectedVertex != null)
+                {
+                    bitMap.Invalidate();
+                }
+
+                selectedVertex = ClosestOrDefault();
+                if (selectedVertex != null)
+                {
+                    bitMap.Invalidate();
+                }
+            }
+        }
+
+        private void BitMap_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
                 lastPosition = new Point(e.X, e.Y);
-                (Vertex vertex, int ind) = ClosestOrDefault();
+                Vertex vertex = ClosestOrDefault();
                 if (vertex == null)
                 {
-                    Vertices.Add(new Vertex(lastPosition));
-                    Edges.Add(new HashSet<Vertex>());
-                    bitMap.Invalidate();
-                }
-                else if (selectedVertex != null && vertex != selectedVertex)
-                {
-                    if (Edges[selectedVertexIndex].Contains(vertex))
+                    LinkedListNode<Vertex> prevVertex = GetPreviousVertex();
+                    if (prevVertex != null)
                     {
-                        Edges[selectedVertexIndex].Remove(vertex);
-                        Edges[ind].Remove(selectedVertex);
+                        var v1 = prevVertex.Value;
+                        var v2 = v1.next;
+                        var newVertex = new Vertex(lastPosition)
+                        {
+                            prev = v1,
+                            next = v2
+                        };
+
+                        v1.next = newVertex;
+                        v2.prev = newVertex;
+
+                        vertices.AddAfter(prevVertex, newVertex);
+                        bitMap.Invalidate();
                     }
-                    else
-                    {
-                        Edges[selectedVertexIndex].Add(vertex);
-                        Edges[ind].Add(selectedVertex);
-                    }
-                    bitMap.Invalidate();
                 }
             }
-            else if (e.Button == MouseButtons.Right)
+        }
+
+        private Vertex ClosestOrDefault()
+        {
+            Vertex result = null;
+            double minDist = double.PositiveInfinity;
+            foreach (Vertex v in vertices)
             {
-                lastPosition = new Point(e.X, e.Y);
-                if (selectedVertex != null)
+                if (VerticesIntersect(v.point, lastPosition) || v.point.Equals(lastPosition))
                 {
-                    bitMap.Invalidate();
+                    double currDist = Distance(v.point, lastPosition);
+                    if (minDist > currDist)
+                    {
+                        minDist = currDist;
+                        result = v;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+        private LinkedListNode<Vertex> GetPreviousVertex()
+        {
+            int i = 0;
+            for(var currentNode = vertices.First; currentNode != null; currentNode = currentNode.Next)
+            {
+                var vertex = currentNode.Value;
+                double d1 = Distance(vertex.point, lastPosition);
+                double d2 = Distance(lastPosition, vertex.next.point);
+                double d = Distance(vertex.point, vertex.next.point);
+
+                if (d1 + d2 - d < eps)
+                {
+                    return (currentNode);
                 }
 
-                (selectedVertex, selectedVertexIndex) = ClosestOrDefault();
-                if (selectedVertex != null)
-                {
-                    bitMap.Invalidate();
-                }
+                ++i;
             }
+
+            return (null);
         }
 
         private void BitMap_MouseDown(object sender, MouseEventArgs e)
@@ -215,28 +242,6 @@ namespace GraphEditor
             }
         }
 
-        private (Vertex, int) ClosestOrDefault()
-        {
-            Vertex result = null;
-            int index = -1;
-            double minDist = double.PositiveInfinity;
-            for (int i = 0; i < Vertices.Count; ++i)
-            {
-                if (VerticesIntersect(Vertices[i].point, lastPosition) || Vertices[i].point.Equals(lastPosition))
-                {
-                    double currDist = Distance(Vertices[i].point, lastPosition);
-                    if (minDist > currDist)
-                    {
-                        minDist = currDist;
-                        result = Vertices[i];
-                        index = i;
-                    }
-                }
-            }
-
-            return (result, index);
-        }
-
         private bool VerticesIntersect(Point p1, Point p2)
         {
             return (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y)
@@ -265,13 +270,9 @@ namespace GraphEditor
 
         private void RemoveVertex()
         {
-            Vertices.RemoveAt(selectedVertexIndex);
-            for (int i = 0; i < Edges.Count; ++i)
-            {
-                Edges[i].Remove(selectedVertex);
-
-            }
-            Edges.RemoveAt(selectedVertexIndex);
+            vertices.Remove(selectedVertex);
+            selectedVertex.next.prev = selectedVertex.prev;
+            selectedVertex.prev.next = selectedVertex.next;
 
             selectedVertex = null;
             current = Action.None;
@@ -287,10 +288,20 @@ namespace GraphEditor
 
         private void ClearGraph()
         {
-            Vertices.RemoveRange(3, Vertices.Count - 3);
-            Edges.RemoveRange(3, Vertices.Count - 3);
-            Edges[2].Clear();
-            Edges[2].Add(Vertices[0]);
+            var triangle = vertices.Take(3).ToList();
+            triangle[0].next = triangle[1];
+            triangle[0].prev = triangle[2];
+
+            triangle[1].next = triangle[2];
+            triangle[1].prev = triangle[0];
+
+            triangle[2].next = triangle[0];
+            triangle[2].prev = triangle[1];
+
+            vertices.Clear();
+            vertices.AddLast(triangle[0]);
+            vertices.AddLast(triangle[1]);
+            vertices.AddLast(triangle[2]);
 
             current = Action.None;
             selectedVertex = null;
