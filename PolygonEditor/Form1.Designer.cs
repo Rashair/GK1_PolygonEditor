@@ -16,6 +16,8 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+
+                canvas.Dispose();
             }
             base.Dispose(disposing);
         }

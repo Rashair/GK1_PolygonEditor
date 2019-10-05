@@ -14,18 +14,11 @@ namespace GraphEditor
 {
     public partial class Form1 : Form
     {
-        private const int vertexRadius = 15;
         private const double eps = 0.5;
 
-        private static readonly StringFormat format = new StringFormat()
-        {
-            LineAlignment = StringAlignment.Center,
-            Alignment = StringAlignment.Center
-        };
-        private static readonly Size locationAdjustment = new Size(-vertexRadius / 2, -vertexRadius / 2);
-        private static readonly Pen pen = new Pen(Color.Black, 2);
+        private static readonly Size locationAdjustment = 
+            new Size(-Vertex.radius / 2, -Vertex.radius / 2);
         private static readonly Pen edgePen = new Pen(Color.Black, 2);
-        private readonly ComponentResourceManager resources;
 
         private enum Action { None, Move }
         private Action current;
@@ -44,39 +37,9 @@ namespace GraphEditor
 
             var bitmapSize = bitMap.Size;
             canvas = new Bitmap(bitmapSize.Width, bitmapSize.Height);
-            rectangle = new Rectangle() { Size = new Size(vertexRadius, vertexRadius) };
-
-
-            resources = new ComponentResourceManager(typeof(Form1));
-
-            // Adding default polygon
-            int x1 = bitmapSize.Width / 4;
-            int y1 = bitmapSize.Height / 4;
-            int length = bitmapSize.Width / 4;
-
-            var v1 = new Vertex(x1, y1);
-            var v2 = new Vertex(x1 + length, y1);
-            var v3 = new Vertex(x1 + length, y1 + length);
-            var v4 = new Vertex(x1, y1 + length);
-
-            v1.next = v2;
-            v1.prev = v4;
-
-            v2.next = v3;
-            v2.prev = v1;
-
-            v3.next = v4;
-            v3.prev = v2;
-
-            v4.next = v1;
-            v4.prev = v3;
-
-            vertices = new LinkedList<Vertex>();
-
-            vertices.AddLast(v1);
-            vertices.AddLast(v2);
-            vertices.AddLast(v3);
-            vertices.AddLast(v4);
+            rectangle = new Rectangle() { Size = new Size(Vertex.radius, Vertex.radius) };
+            vertices = new LinkedList<Vertex>(PolygonFactory.GetRectangle(
+                new Point(bitmapSize.Width / 3, bitmapSize.Height / 3)));
         }
 
         private void BitMap_Paint(object sender, PaintEventArgs e)
@@ -146,12 +109,7 @@ namespace GraphEditor
                     {
                         var v1 = prevVertex.Value;
                         var v2 = v1.next;
-                        var newVertex = new Vertex(lastPosition)
-                        {
-                            prev = v1,
-                            next = v2
-                        };
-
+                        var newVertex = new Vertex(lastPosition, v1, v2);
                         v1.next = newVertex;
                         v2.prev = newVertex;
 
@@ -168,7 +126,7 @@ namespace GraphEditor
             double minDist = double.PositiveInfinity;
             foreach (Vertex v in vertices)
             {
-                if (Geometry.VerticesIntersect(v.point, position, vertexRadius) || 
+                if (Geometry.VerticesIntersect(v.point, position, Vertex.radius) || 
                     v.point.Equals(position))
                 {
                     double currDist = Geometry.Distance(v.point, position);
@@ -281,20 +239,9 @@ namespace GraphEditor
 
         private void ClearGraph()
         {
-            var triangle = vertices.Take(3).ToList();
-            triangle[0].next = triangle[1];
-            triangle[0].prev = triangle[2];
-
-            triangle[1].next = triangle[2];
-            triangle[1].prev = triangle[0];
-
-            triangle[2].next = triangle[0];
-            triangle[2].prev = triangle[1];
-
             vertices.Clear();
-            vertices.AddLast(triangle[0]);
-            vertices.AddLast(triangle[1]);
-            vertices.AddLast(triangle[2]);
+            vertices.AppendRange(PolygonFactory.GetTriangle(
+                new Point(bitMap.Width / 3, bitMap.Height / 3)));
 
             current = Action.None;
             selectedVertex = null;
