@@ -16,28 +16,29 @@ namespace GraphEditor
     {
         private const double eps = 0.5;
 
-        private static readonly Size locationAdjustment = 
+        private static readonly Size locationAdjustment =
             new Size(-Vertex.radius / 2, -Vertex.radius / 2);
         private static readonly Pen edgePen = new Pen(Color.Black, 2);
 
-        private enum Action { None, Move }
+        private enum Action { None, MoveVertex, MovePolygon }
         private Action current;
 
         private Size previousLocation;
         private Vertex selectedVertex;
-        private Rectangle rectangle;
+        private bool isPolygonSelected;
+        private Rectangle vertexRectangle;
 
-        private Bitmap canvas;
-
-        private LinkedList<Vertex> vertices;
+        private readonly LinkedList<Vertex> vertices;
+        private readonly Bitmap canvas;
 
         public Form1()
         {
             InitializeComponent();
 
+
+            canvas = new Bitmap(1920, 1024);
+            vertexRectangle = new Rectangle() { Size = new Size(Vertex.radius, Vertex.radius) };
             var bitmapSize = bitMap.Size;
-            canvas = new Bitmap(bitmapSize.Width, bitmapSize.Height);
-            rectangle = new Rectangle() { Size = new Size(Vertex.radius, Vertex.radius) };
             vertices = new LinkedList<Vertex>(PolygonFactory.GetRectangle(
                 new Point(bitmapSize.Width / 3, bitmapSize.Height / 3)));
         }
@@ -55,15 +56,16 @@ namespace GraphEditor
 
                 if (vertices.Count > 0)
                 {
-                    canvasGraphics.FillPolygon(Brushes.Green, vertices.Select(v => v.point).ToArray());
+                    var polygonBrush = isPolygonSelected ? Brushes.Pink : Brushes.Green;
+                    canvasGraphics.FillPolygon(polygonBrush, vertices.Select(v => v.point).ToArray());
                 }
 
                 foreach (Vertex v in vertices)
                 {
-                    rectangle.Location = v.point + locationAdjustment;
+                    vertexRectangle.Location = v.point + locationAdjustment;
                     canvasGraphics.FillEllipse(v == selectedVertex ?
                         Brushes.Red : Brushes.Black,
-                        rectangle);
+                        vertexRectangle);
                 }
             }
             e.Graphics.DrawImage(canvas, 0, 0);
@@ -78,7 +80,16 @@ namespace GraphEditor
                 var lastPosition = new Point(e.X, e.Y);
                 if (Input.Keyboard.IsKeyDown(Input.Key.LeftCtrl))
                 {
-                    
+                    if (!isPolygonSelected && Geometry.IsPointInsidePolygon(lastPosition,
+                        vertices.Select(v => v.point).ToList()))
+                    {
+                        isPolygonSelected = true;
+                    }
+                    else
+                    {
+                        isPolygonSelected = false;
+                    }
+                    bitMap.Invalidate();
                 }
                 else
                 {
@@ -104,7 +115,7 @@ namespace GraphEditor
                 Vertex vertex = ClosestOrDefault(lastPosition);
                 if (vertex == null)
                 {
-                    LinkedListNode<Vertex> prevVertex = GetPreviousVertex(lastPosition);
+                    LinkedListNode<Vertex> prevVertex = GetEdgeVertex(lastPosition);
                     if (prevVertex != null)
                     {
                         var v1 = prevVertex.Value;
@@ -126,7 +137,7 @@ namespace GraphEditor
             double minDist = double.PositiveInfinity;
             foreach (Vertex v in vertices)
             {
-                if (Geometry.VerticesIntersect(v.point, position, Vertex.radius) || 
+                if (Geometry.AreVerticesIntersecting(v.point, position, Vertex.radius) ||
                     v.point.Equals(position))
                 {
                     double currDist = Geometry.Distance(v.point, position);
@@ -141,10 +152,9 @@ namespace GraphEditor
             return result;
         }
 
-
-        private LinkedListNode<Vertex> GetPreviousVertex(Point position)
+        private LinkedListNode<Vertex> GetEdgeVertex(Point position)
         {
-            for(var currentNode = vertices.First; currentNode != null; currentNode = currentNode.Next)
+            for (var currentNode = vertices.First; currentNode != null; currentNode = currentNode.Next)
             {
                 var vertex = currentNode.Value;
                 double d1 = Geometry.Distance(vertex.point, position);
@@ -162,16 +172,17 @@ namespace GraphEditor
 
         private void BitMap_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.XButton1)
+            if (e.Button == MouseButtons.Left)
             {
-                current = Action.Move;
+                current = Input.Keyboard.IsKeyDown(Input.Key.LeftCtrl) ?
+                   Action.MovePolygon : Action.MoveVertex;
                 previousLocation = (Size)e.Location;
             }
         }
 
         private void BitMap_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.XButton1)
+            if (e.Button == MouseButtons.Left)
             {
                 current = Action.None;
                 if (selectedVertex != null)
@@ -189,15 +200,54 @@ namespace GraphEditor
 
                     bitMap.Invalidate();
                 }
+                else if (isPolygonSelected)
+                {
+                    var area = bitMap.ClientRectangle;
+                    int maxXAdjustment = 0;
+                    int maxYAdjustment = 0;
+                    foreach (Vertex v in vertices)
+                    {
+                        if (v.point.Y < area.Y)
+                            maxYAdjustment = Math.Max(maxYAdjustment, (area.Y - v.point.Y));
+                        else if (v.point.Y > area.Y + area.Height)
+                            maxYAdjustment = -Math.Max(Math.Abs(maxYAdjustment), v.point.Y - area.Y - area.Height);
+
+                        if (v.point.X < area.X)
+                            maxXAdjustment = Math.Max(maxXAdjustment, (area.X - v.point.X));
+                        else if (v.point.X > area.X + area.Width)
+                            maxXAdjustment = -Math.Max(Math.Abs(maxXAdjustment), v.point.X - area.X - area.Width);
+                    }
+
+                    if (maxXAdjustment != 0 || maxYAdjustment != 0)
+                    {
+                        foreach (Vertex v in vertices)
+                        {
+                            v.point.X += maxXAdjustment;
+                            v.point.Y += maxYAdjustment;
+                        }
+
+                        bitMap.Invalidate();
+                    }
+                }
             }
         }
 
         private void BitMap_MouseMove(object sender, MouseEventArgs e)
         {
-            if (current == Action.Move && selectedVertex != null)
+            if (current == Action.MoveVertex && selectedVertex != null)
             {
                 selectedVertex.point += (Size)e.Location - previousLocation;
                 previousLocation = (Size)e.Location;
+                bitMap.Invalidate();
+            }
+            else if (current == Action.MovePolygon && isPolygonSelected)
+            {
+                var adjustment = (Size)e.Location - previousLocation;
+                previousLocation = (Size)e.Location;
+                foreach (Vertex v in vertices)
+                {
+                    v.point += adjustment;
+                }
                 bitMap.Invalidate();
             }
         }

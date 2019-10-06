@@ -249,6 +249,9 @@
   <data name="bitMap.Size" type="System.Drawing.Size, System.Drawing">
     <value>619, 547</value>
   </data>
+  <data name="bitMap.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>AutoSize</value>
+  </data>
   <data name="bitMap.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>

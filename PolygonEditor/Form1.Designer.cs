@@ -102,6 +102,7 @@
             this.Name = "Form1";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.EditionGroupBox.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bitMap)).EndInit();
