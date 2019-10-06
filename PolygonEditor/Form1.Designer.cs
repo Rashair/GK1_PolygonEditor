@@ -18,6 +18,8 @@
                 components.Dispose();
 
                 canvas.Dispose();
+                selectedVertexBrush.Dispose();
+                selectedEdgeBrush.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -37,7 +39,6 @@
             this.ClearGraphButton = new System.Windows.Forms.Button();
             this.RemoveVertexButton = new System.Windows.Forms.Button();
             this.bitMap = new System.Windows.Forms.PictureBox();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.EditionGroupBox.SuspendLayout();
@@ -116,7 +117,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.GroupBox EditionGroupBox;
         private System.Windows.Forms.PictureBox bitMap;
-        private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Button RemoveVertexButton;
         private System.Windows.Forms.Button ClearGraphButton;
     }
