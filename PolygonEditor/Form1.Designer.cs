@@ -88,7 +88,6 @@
             this.bitMap.Name = "bitMap";
             this.bitMap.TabStop = false;
             this.bitMap.Paint += new System.Windows.Forms.PaintEventHandler(this.BitMap_Paint);
-            this.bitMap.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseClick);
             this.bitMap.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseDoubleClick);
             this.bitMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseDown);
             this.bitMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseMove);
