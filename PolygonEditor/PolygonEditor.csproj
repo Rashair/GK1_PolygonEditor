@@ -78,12 +78,18 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form1Helpers.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Geometry.cs" />
     <Compile Include="LinkedListExtensions.cs" />
     <Compile Include="PolygonFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vertex.cs" />
+    <EmbeddedResource Include="Form1.en-GB.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.en.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

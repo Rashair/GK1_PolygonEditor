@@ -36,7 +36,7 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.EditionGroupBox = new System.Windows.Forms.GroupBox();
-            this.ClearGraphButton = new System.Windows.Forms.Button();
+            this.DeletePolygonButton = new System.Windows.Forms.Button();
             this.RemoveVertexButton = new System.Windows.Forms.Button();
             this.bitMap = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
@@ -61,17 +61,17 @@
             // EditionGroupBox
             // 
             resources.ApplyResources(this.EditionGroupBox, "EditionGroupBox");
-            this.EditionGroupBox.Controls.Add(this.ClearGraphButton);
+            this.EditionGroupBox.Controls.Add(this.DeletePolygonButton);
             this.EditionGroupBox.Controls.Add(this.RemoveVertexButton);
             this.EditionGroupBox.Name = "EditionGroupBox";
             this.EditionGroupBox.TabStop = false;
             // 
-            // ClearGraphButton
+            // DeletePolygonButton
             // 
-            resources.ApplyResources(this.ClearGraphButton, "ClearGraphButton");
-            this.ClearGraphButton.Name = "ClearGraphButton";
-            this.ClearGraphButton.UseVisualStyleBackColor = true;
-            this.ClearGraphButton.Click += new System.EventHandler(this.ClearGraphButton_Click);
+            resources.ApplyResources(this.DeletePolygonButton, "DeletePolygonButton");
+            this.DeletePolygonButton.Name = "DeletePolygonButton";
+            this.DeletePolygonButton.UseVisualStyleBackColor = true;
+            this.DeletePolygonButton.Click += new System.EventHandler(this.DeletePolygonButton_Click);
             // 
             // RemoveVertexButton
             // 
@@ -88,6 +88,7 @@
             this.bitMap.Name = "bitMap";
             this.bitMap.TabStop = false;
             this.bitMap.Paint += new System.Windows.Forms.PaintEventHandler(this.BitMap_Paint);
+            this.bitMap.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseClick);
             this.bitMap.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseDoubleClick);
             this.bitMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseDown);
             this.bitMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseMove);
@@ -117,7 +118,7 @@
         private System.Windows.Forms.GroupBox EditionGroupBox;
         private System.Windows.Forms.PictureBox bitMap;
         private System.Windows.Forms.Button RemoveVertexButton;
-        private System.Windows.Forms.Button ClearGraphButton;
+        private System.Windows.Forms.Button DeletePolygonButton;
     }
 }
 

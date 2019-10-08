@@ -24,11 +24,12 @@ namespace GraphEditor
         private Vertex selectedVertex;
         private readonly Brush selectedVertexBrush = Brushes.Red;
         private Vertex selectedEdgeVertex;
-        private readonly Brush selectedEdgeBrush = Brushes.BlueViolet;
+        private readonly SolidBrush selectedEdgeBrush = new SolidBrush(Color.BlueViolet);
         private bool isPolygonSelected;
 
         private readonly List<LinkedList<Vertex>> polygons;
-        private readonly LinkedList<Vertex> vertices;
+        private bool inAddPolygonMode;
+        private LinkedList<Vertex> currentPolygon;
         private readonly Bitmap canvas;
 
         public Form1()
@@ -38,49 +39,91 @@ namespace GraphEditor
             canvas = new Bitmap(1920, 1024);
             vertexRectangle = new Rectangle() { Size = new Size(Vertex.radius, Vertex.radius) };
             var bitmapSize = bitMap.Size;
-            vertices = new LinkedList<Vertex>(PolygonFactory.GetRectangle(
+            currentPolygon = new LinkedList<Vertex>(PolygonFactory.GetRectangle(
                 new Point(bitmapSize.Width / 3, bitmapSize.Height / 3)));
-            polygons = new List<LinkedList<Vertex>> { vertices };
+            polygons = new List<LinkedList<Vertex>> { currentPolygon };
         }
 
         private void BitMap_Paint(object sender, PaintEventArgs e)
         {
+            if (currentPolygon == null)
+            {
+                e.Graphics.Clear(Color.White);
+                return;
+            }
+
             // Bitmap setpixel
             using (Graphics canvasGraphics = Graphics.FromImage(canvas))
             {
                 canvasGraphics.Clear(Color.White);
-                if (vertices.Count > 0)
-                {
-                    var polygonBrush = isPolygonSelected ? Brushes.DarkBlue : Brushes.LightGreen;
-                    canvasGraphics.FillPolygon(polygonBrush, vertices.Select(v => v.point).ToArray());
-                }
 
-                foreach (Vertex v in vertices)
+                if (inAddPolygonMode)
                 {
-                    canvas.DrawLine(v.point, v.next.point, v == selectedEdgeVertex ? 
-                        ((SolidBrush)selectedEdgeBrush).Color : Color.Black);
-                }
+                    foreach (LinkedList<Vertex> polygon in polygons)
+                    {
+                        if (polygon != currentPolygon)
+                        {
+                            DrawNormalPolygon(canvasGraphics, polygon);
+                        }
+                    }
 
-                foreach (Vertex v in vertices)
+                    var mousePos = bitMap.PointToClient(MousePosition);
+                    foreach (Vertex v in currentPolygon)
+                    {
+                        canvas.DrawLine(v.point, v.next?.point ?? mousePos, Color.Black);
+
+                        vertexRectangle.Location = v.point + locationAdjustment;
+                        canvasGraphics.FillEllipse(Brushes.Black, vertexRectangle);
+                    }
+                }
+                else
                 {
-                    vertexRectangle.Location = v.point + locationAdjustment;
-                    canvasGraphics.FillEllipse(
-                        v == selectedVertex ? selectedVertexBrush :
-                        v == selectedEdgeVertex || v.prev == selectedEdgeVertex ? selectedEdgeBrush :
-                        Brushes.Black,
+                    foreach (LinkedList<Vertex> polygon in polygons)
+                    {
+                        if (polygon != currentPolygon)
+                        {
+                            DrawNormalPolygon(canvasGraphics, polygon);
+                        }
+                    }
+
+                    canvasGraphics.FillPolygon(Brushes.LightGreen, currentPolygon.Select(v => v.point).ToArray());
+                    foreach (Vertex v in currentPolygon)
+                    {
+                        canvas.DrawLine(v.point, v.next.point, Color.Black);
+
+                        vertexRectangle.Location = v.point + locationAdjustment;
+                        canvasGraphics.FillEllipse(v == selectedVertex ? selectedVertexBrush : Brushes.Black, 
                         vertexRectangle);
+                    }
                 }
             }
             e.Graphics.DrawImage(canvas, 0, 0);
 
-            RemoveVertexButton.Enabled = selectedVertex != null && vertices.Count > 3;
+            RemoveVertexButton.Enabled = selectedVertex != null && currentPolygon.Count > 3;
         }
 
         private void BitMap_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && !inAddPolygonMode)
             {
                 if (GetVertexAtPosition(e.Location) == null)
+                {
+                    if (!Geometry.IsPointInsidePolygon(e.Location,
+                        currentPolygon.Select(v => v.point).ToList()))
+                    {
+                        AddNewPolygon(e.Location);
+                        bitMap.Invalidate();
+                    }
+                }
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                if (inAddPolygonMode)
+                {
+                    DeletePolygon();
+                    bitMap.Invalidate();
+                }
+                else if (GetVertexAtPosition(e.Location) == null)
                 {
                     LinkedListNode<Vertex> firstEdgeVertex = GetEdgeVertex(e.Location);
                     if (firstEdgeVertex != null)
@@ -91,61 +134,47 @@ namespace GraphEditor
                         v1.next = newVertex;
                         v2.prev = newVertex;
 
-                        vertices.AddAfter(firstEdgeVertex, newVertex);
+                        currentPolygon.AddAfter(firstEdgeVertex, newVertex);
                         bitMap.Invalidate();
                     }
-                    else if(!Geometry.IsPointInsidePolygon(e.Location, vertices.Select(v => v.point).ToList()))
-                    {
-                        var currVertex = new Vertex(e.Location);
-                        LinkedList<Vertex> newPolygon = new LinkedList<Vertex>();
-
-                    }
                 }
+                // TODO : relations here
             }
         }
 
-        private Vertex GetVertexAtPosition(Point position)
+        private void BitMap_MouseClick(object sender, MouseEventArgs e)
         {
-            Vertex result = null;
-            double minDist = double.PositiveInfinity;
-            foreach (Vertex v in vertices)
+            if (e.Button == MouseButtons.Left)
             {
-                if (Geometry.AreVerticesIntersecting(v.point, position, Vertex.radius) ||
-                    v.point.Equals(position))
+                if (currentPolygon == null)
                 {
-                    double currDist = Geometry.Distance(v.point, position);
-                    if (minDist > currDist)
+                    AddNewPolygon(e.Location);
+                    bitMap.Invalidate();
+                }
+                else if (inAddPolygonMode)
+                {
+                    var vertex = GetVertexAtPosition(e.Location);
+                    if (vertex == null)
                     {
-                        minDist = currDist;
-                        result = v;
+                        var newVertex = new Vertex(e.Location, currentPolygon.Last.Value);
+                        currentPolygon.Last.Value.next = newVertex;
+                        currentPolygon.AddLast(newVertex);
+                        bitMap.Invalidate();
+                    }
+                    else if (currentPolygon.Count >= 3 && vertex.prev == null)
+                    {
+                        vertex.prev = currentPolygon.Last.Value;
+                        currentPolygon.Last.Value.next = vertex;
+                        TurnOffAddPolygonMode();
+                        bitMap.Invalidate();
                     }
                 }
             }
-
-            return result;
-        }
-
-        private LinkedListNode<Vertex> GetEdgeVertex(Point position)
-        {
-            for (var currentNode = vertices.First; currentNode != null; currentNode = currentNode.Next)
-            {
-                var vertex = currentNode.Value;
-                double d1 = Geometry.Distance(vertex.point, position);
-                double d2 = Geometry.Distance(position, vertex.next.point);
-                double d = Geometry.Distance(vertex.point, vertex.next.point);
-
-                if (Math.Abs(d1 + d2 - d) < eps)
-                {
-                    return (currentNode);
-                }
-            }
-
-            return (null);
         }
 
         private void BitMap_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Right)
             {
                 previousMouseDownLocation = (Size)e.Location;
                 selectedVertex = GetVertexAtPosition(e.Location);
@@ -155,24 +184,41 @@ namespace GraphEditor
                     if (selectedEdgeVertex == null)
                     {
                         isPolygonSelected = !isPolygonSelected && Geometry.IsPointInsidePolygon(e.Location,
-                            vertices.Select(v => v.point).ToList());
+                            currentPolygon.Select(v => v.point).ToList());
+                        if (!isPolygonSelected)
+                        {
+                            foreach (LinkedList<Vertex> polygon in polygons)
+                            {
+                                if (Geometry.IsPointInsidePolygon(e.Location,
+                                    polygon.Select(v => v.point).ToList()))
+                                {
+                                    currentPolygon = polygon;
+                                    isPolygonSelected = true;
+                                    bitMap.Invalidate();
+                                    break;
+                                }
+                            }
+                        }
+                        else bitMap.Invalidate();
                     }
+                    else bitMap.Invalidate();
                 }
-                bitMap.Invalidate();
+                else bitMap.Invalidate();
+
             }
         }
 
         private void BitMap_MouseUp(object sender, MouseEventArgs e)
         {
             // Prevents from going out of bitmap
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Right)
             {
                 if (isPolygonSelected)
                 {
                     var area = bitMap.ClientRectangle;
                     int maxXAdjustment = 0;
                     int maxYAdjustment = 0;
-                    foreach (Vertex v in vertices)
+                    foreach (Vertex v in currentPolygon)
                     {
                         var (xValue, yValue) = GetAdjustment(ref area, v.point);
                         if (Math.Abs(maxXAdjustment) < Math.Abs(xValue))
@@ -183,7 +229,7 @@ namespace GraphEditor
 
                     if (maxXAdjustment != 0 || maxYAdjustment != 0)
                     {
-                        foreach (Vertex v in vertices)
+                        foreach (Vertex v in currentPolygon)
                         {
                             v.point.Offset(maxXAdjustment, maxYAdjustment);
                         }
@@ -220,42 +266,39 @@ namespace GraphEditor
             }
         }
 
-        private static (int xAdjustment, int yAdjustment) GetAdjustment(ref Rectangle area, Point pos)
-        {
-            int xAdjustment = pos.X < area.X ? area.X - pos.X :
-                pos.X > area.X + area.Width ? area.X + area.Width - pos.X : 0;
-            int yAdjustment = pos.Y < area.Y ? area.Y - pos.Y :
-                pos.Y > area.Y + area.Height ? area.Y + area.Height - pos.Y : 0;
-
-            return (xAdjustment, yAdjustment);
-        }
-
         private void BitMap_MouseMove(object sender, MouseEventArgs e)
         {
-            if (selectedVertex != null && Control.MouseButtons == MouseButtons.Left)
+            if (inAddPolygonMode)
             {
-                selectedVertex.point += (Size)e.Location - previousMouseDownLocation;
-                previousMouseDownLocation = (Size)e.Location;
-                bitMap.Invalidate();
-
-            }
-            else if (selectedEdgeVertex != null)
-            {
-                var adjustment = (Size)e.Location - previousMouseDownLocation;
-                previousMouseDownLocation = (Size)e.Location;
-                selectedEdgeVertex.point += adjustment;
-                selectedEdgeVertex.next.point += adjustment;
                 bitMap.Invalidate();
             }
-            else if (isPolygonSelected)
+            else
             {
-                var adjustment = (Size)e.Location - previousMouseDownLocation;
-                previousMouseDownLocation = (Size)e.Location;
-                foreach (Vertex v in vertices)
+                if (selectedVertex != null && Control.MouseButtons == MouseButtons.Right)
                 {
-                    v.point += adjustment;
+                    selectedVertex.point += (Size)e.Location - previousMouseDownLocation;
+                    previousMouseDownLocation = (Size)e.Location;
+                    bitMap.Invalidate();
+
                 }
-                bitMap.Invalidate();
+                else if (selectedEdgeVertex != null)
+                {
+                    var adjustment = (Size)e.Location - previousMouseDownLocation;
+                    previousMouseDownLocation = (Size)e.Location;
+                    selectedEdgeVertex.point += adjustment;
+                    selectedEdgeVertex.next.point += adjustment;
+                    bitMap.Invalidate();
+                }
+                else if (isPolygonSelected)
+                {
+                    var adjustment = (Size)e.Location - previousMouseDownLocation;
+                    previousMouseDownLocation = (Size)e.Location;
+                    foreach (Vertex v in currentPolygon)
+                    {
+                        v.point += adjustment;
+                    }
+                    bitMap.Invalidate();
+                }
             }
         }
 
@@ -274,34 +317,10 @@ namespace GraphEditor
             RemoveVertex();
         }
 
-        private void RemoveVertex()
+        private void DeletePolygonButton_Click(object sender, EventArgs e)
         {
-            if (vertices.Count > 3)
-            {
-                vertices.Remove(selectedVertex);
-                selectedVertex.next.prev = selectedVertex.prev;
-                selectedVertex.prev.next = selectedVertex.next;
-
-                selectedVertex = null;
-                RemoveVertexButton.Enabled = false;
-                bitMap.Invalidate();
-            }
-        }
-
-        private void ClearGraphButton_Click(object sender, EventArgs e)
-        {
-            ClearGraph();
+            DeletePolygon();
             bitMap.Invalidate();
-        }
-
-        private void ClearGraph()
-        {
-            vertices.Clear();
-            vertices.AppendRange(PolygonFactory.GetTriangle(
-                new Point(bitMap.Width / 3, bitMap.Height / 3)));
-
-            selectedVertex = null;
-            RemoveVertexButton.Enabled = false;
         }
     }
 }

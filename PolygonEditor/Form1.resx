@@ -128,32 +128,32 @@
   <data name="EditionGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="ClearGraphButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="DeletePolygonButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="ClearGraphButton.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="DeletePolygonButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 62</value>
   </data>
-  <data name="ClearGraphButton.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="DeletePolygonButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>136, 33</value>
   </data>
-  <data name="ClearGraphButton.TabIndex" type="System.Int32, mscorlib">
+  <data name="DeletePolygonButton.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="ClearGraphButton.Text" xml:space="preserve">
-    <value>Wyszyść wielokąt</value>
+  <data name="DeletePolygonButton.Text" xml:space="preserve">
+    <value>Usuń wielokąt</value>
   </data>
-  <data name="&gt;&gt;ClearGraphButton.Name" xml:space="preserve">
-    <value>ClearGraphButton</value>
+  <data name="&gt;&gt;DeletePolygonButton.Name" xml:space="preserve">
+    <value>DeletePolygonButton</value>
   </data>
-  <data name="&gt;&gt;ClearGraphButton.Type" xml:space="preserve">
+  <data name="&gt;&gt;DeletePolygonButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ClearGraphButton.Parent" xml:space="preserve">
+  <data name="&gt;&gt;DeletePolygonButton.Parent" xml:space="preserve">
     <value>EditionGroupBox</value>
   </data>
-  <data name="&gt;&gt;ClearGraphButton.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;DeletePolygonButton.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="RemoveVertexButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -311,6 +311,9 @@
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>800, 600</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Edytor wielokątów</value>
