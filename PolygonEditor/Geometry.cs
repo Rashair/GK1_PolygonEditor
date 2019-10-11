@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace GraphEditor
 {
     static class Geometry
@@ -66,9 +62,11 @@ namespace GraphEditor
                 d2 = new Point(d1.X, 0);
 
             int numerator = longerDim >> 1;
-            for (int i = 0; i <= longerDim && A.X > 0 && A.Y > 0; ++i)
+
+            for (int i = 0; i <= longerDim; ++i)
             {
-                canvas.SetPixel(A.X, A.Y, color);
+                if(A.X > 0 && A.Y > 0 && A.X < canvas.Width && A.Y < canvas.Height)
+                    canvas.SetPixel(A.X, A.Y, color);
 
                 numerator += shorterDim;
                 if (numerator >= longerDim)

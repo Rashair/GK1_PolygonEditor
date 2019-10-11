@@ -19,7 +19,6 @@
 
                 canvas.Dispose();
                 selectedVertexBrush.Dispose();
-                selectedEdgeBrush.Dispose();
             }
             base.Dispose(disposing);
         }

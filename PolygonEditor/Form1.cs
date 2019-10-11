@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Resources;
-using System.Text;
 using System.Windows.Forms;
-using Input = System.Windows.Input;
 
 namespace GraphEditor
 {
@@ -16,15 +10,13 @@ namespace GraphEditor
     {
         private const double eps = 0.5;
 
-        private static readonly Size locationAdjustment =
-            new Size(-Vertex.radius / 2, -Vertex.radius / 2);
+        private static readonly Size locationAdjustment = new Size(-Vertex.radius / 2, -Vertex.radius / 2);
         private Size previousMouseDownLocation;
         private Rectangle vertexRectangle;
 
         private Vertex selectedVertex;
         private readonly Brush selectedVertexBrush = Brushes.Red;
         private Vertex selectedEdgeVertex;
-        private readonly SolidBrush selectedEdgeBrush = new SolidBrush(Color.BlueViolet);
         private bool isPolygonSelected;
 
         private readonly List<LinkedList<Vertex>> polygons;
@@ -62,9 +54,7 @@ namespace GraphEditor
                     foreach (LinkedList<Vertex> polygon in polygons)
                     {
                         if (polygon != currentPolygon)
-                        {
                             DrawNormalPolygon(canvasGraphics, polygon);
-                        }
                     }
 
                     var mousePos = bitMap.PointToClient(MousePosition);
@@ -81,9 +71,7 @@ namespace GraphEditor
                     foreach (LinkedList<Vertex> polygon in polygons)
                     {
                         if (polygon != currentPolygon)
-                        {
                             DrawNormalPolygon(canvasGraphics, polygon);
-                        }
                     }
 
                     canvasGraphics.FillPolygon(Brushes.LightGreen, currentPolygon.Select(v => v.point).ToArray());
@@ -305,9 +293,7 @@ namespace GraphEditor
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete && selectedVertex != null)
-            {
                 RemoveVertex();
-            }
         }
 
         // Right section

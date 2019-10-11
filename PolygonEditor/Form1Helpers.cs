@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GraphEditor
@@ -86,9 +84,7 @@ namespace GraphEditor
                 double d = Geometry.Distance(vertex.point, vertex.next.point);
 
                 if (Math.Abs(d1 + d2 - d) < eps)
-                {
                     return (currentNode);
-                }
             }
 
             return (null);
@@ -124,9 +120,7 @@ namespace GraphEditor
             polygons.Remove(currentPolygon);
             GetNewCurrentPolygon();
             if (currentPolygon != null)
-            {
                 TurnOffAddPolygonMode();
-            }
         }
 
         private void GetNewCurrentPolygon()
