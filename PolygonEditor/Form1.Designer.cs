@@ -34,14 +34,18 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.EditionGroupBox = new System.Windows.Forms.GroupBox();
+            this.bitMap = new System.Windows.Forms.PictureBox();
+            this.menuControl = new System.Windows.Forms.TabControl();
+            this.tab1 = new System.Windows.Forms.TabPage();
             this.RelationGroupBox = new System.Windows.Forms.GroupBox();
             this.chooseRelationEdgeLabel = new System.Windows.Forms.Label();
-            this.chooseRelationGroupBox = new System.Windows.Forms.GroupBox();
             this.perpendicularityPictureBox = new System.Windows.Forms.PictureBox();
             this.equalityPictureBox = new System.Windows.Forms.PictureBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.deleteGroupBox = new System.Windows.Forms.GroupBox();
+            this.DeleteVertexButton = new System.Windows.Forms.Button();
+            this.DeletePolygonButton = new System.Windows.Forms.Button();
+            this.tab2 = new System.Windows.Forms.TabPage();
+            this.newPolygonGroupBox = new System.Windows.Forms.GroupBox();
             this.generatePolygonButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.sideLengthTextBox = new System.Windows.Forms.TextBox();
@@ -50,49 +54,64 @@
             this.label1 = new System.Windows.Forms.Label();
             this.centreYTextBox = new System.Windows.Forms.TextBox();
             this.centreXTextBox = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.RemoveVertexButton = new System.Windows.Forms.Button();
-            this.DeletePolygonButton = new System.Windows.Forms.Button();
-            this.bitMap = new System.Windows.Forms.PictureBox();
+            this.deleteRelation = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
-            this.EditionGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bitMap)).BeginInit();
+            this.menuControl.SuspendLayout();
+            this.tab1.SuspendLayout();
             this.RelationGroupBox.SuspendLayout();
-            this.chooseRelationGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.perpendicularityPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.equalityPictureBox)).BeginInit();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bitMap)).BeginInit();
+            this.deleteGroupBox.SuspendLayout();
+            this.tab2.SuspendLayout();
+            this.newPolygonGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.bitMap, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.menuControl, 1, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
-            // tableLayoutPanel2
+            // bitMap
             // 
-            resources.ApplyResources(this.tableLayoutPanel2, "tableLayoutPanel2");
-            this.tableLayoutPanel2.Controls.Add(this.EditionGroupBox, 0, 0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.bitMap.BackColor = System.Drawing.Color.White;
+            this.bitMap.Cursor = System.Windows.Forms.Cursors.Cross;
+            resources.ApplyResources(this.bitMap, "bitMap");
+            this.bitMap.Name = "bitMap";
+            this.bitMap.TabStop = false;
+            this.bitMap.Paint += new System.Windows.Forms.PaintEventHandler(this.BitMap_Paint);
+            this.bitMap.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseClick);
+            this.bitMap.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseDoubleClick);
+            this.bitMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseDown);
+            this.bitMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseMove);
+            this.bitMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseUp);
             // 
-            // EditionGroupBox
+            // menuControl
             // 
-            this.EditionGroupBox.Controls.Add(this.RelationGroupBox);
-            this.EditionGroupBox.Controls.Add(this.groupBox2);
-            this.EditionGroupBox.Controls.Add(this.groupBox1);
-            resources.ApplyResources(this.EditionGroupBox, "EditionGroupBox");
-            this.EditionGroupBox.Name = "EditionGroupBox";
-            this.EditionGroupBox.TabStop = false;
+            this.menuControl.Controls.Add(this.tab1);
+            this.menuControl.Controls.Add(this.tab2);
+            resources.ApplyResources(this.menuControl, "menuControl");
+            this.menuControl.Name = "menuControl";
+            this.menuControl.SelectedIndex = 0;
+            // 
+            // tab1
+            // 
+            this.tab1.BackColor = System.Drawing.SystemColors.Control;
+            this.tab1.Controls.Add(this.RelationGroupBox);
+            this.tab1.Controls.Add(this.deleteGroupBox);
+            resources.ApplyResources(this.tab1, "tab1");
+            this.tab1.Name = "tab1";
             // 
             // RelationGroupBox
             // 
-            resources.ApplyResources(this.RelationGroupBox, "RelationGroupBox");
+            this.RelationGroupBox.BackColor = System.Drawing.SystemColors.Control;
+            this.RelationGroupBox.Controls.Add(this.perpendicularityPictureBox);
+            this.RelationGroupBox.Controls.Add(this.equalityPictureBox);
             this.RelationGroupBox.Controls.Add(this.chooseRelationEdgeLabel);
-            this.RelationGroupBox.Controls.Add(this.chooseRelationGroupBox);
+            this.RelationGroupBox.Controls.Add(this.deleteRelation);
+            resources.ApplyResources(this.RelationGroupBox, "RelationGroupBox");
             this.RelationGroupBox.Name = "RelationGroupBox";
             this.RelationGroupBox.TabStop = false;
             // 
@@ -104,14 +123,6 @@
             this.chooseRelationEdgeLabel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.chooseRelationEdgeLabel.Name = "chooseRelationEdgeLabel";
             this.chooseRelationEdgeLabel.UseWaitCursor = true;
-            // 
-            // chooseRelationGroupBox
-            // 
-            this.chooseRelationGroupBox.Controls.Add(this.perpendicularityPictureBox);
-            this.chooseRelationGroupBox.Controls.Add(this.equalityPictureBox);
-            resources.ApplyResources(this.chooseRelationGroupBox, "chooseRelationGroupBox");
-            this.chooseRelationGroupBox.Name = "chooseRelationGroupBox";
-            this.chooseRelationGroupBox.TabStop = false;
             // 
             // perpendicularityPictureBox
             // 
@@ -133,19 +144,49 @@
             this.equalityPictureBox.TabStop = false;
             this.equalityPictureBox.Click += new System.EventHandler(this.equalityPictureBox_Click);
             // 
-            // groupBox2
+            // deleteGroupBox
             // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.Controls.Add(this.generatePolygonButton);
-            this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Controls.Add(this.sideLengthTextBox);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.verticesNumberTextBox);
-            this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Controls.Add(this.centreYTextBox);
-            this.groupBox2.Controls.Add(this.centreXTextBox);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.TabStop = false;
+            resources.ApplyResources(this.deleteGroupBox, "deleteGroupBox");
+            this.deleteGroupBox.BackColor = System.Drawing.SystemColors.Control;
+            this.deleteGroupBox.Controls.Add(this.DeleteVertexButton);
+            this.deleteGroupBox.Controls.Add(this.DeletePolygonButton);
+            this.deleteGroupBox.Name = "deleteGroupBox";
+            this.deleteGroupBox.TabStop = false;
+            // 
+            // DeleteVertexButton
+            // 
+            resources.ApplyResources(this.DeleteVertexButton, "DeleteVertexButton");
+            this.DeleteVertexButton.Name = "DeleteVertexButton";
+            this.DeleteVertexButton.UseVisualStyleBackColor = true;
+            this.DeleteVertexButton.Click += new System.EventHandler(this.DeleteVertexButton_Click);
+            // 
+            // DeletePolygonButton
+            // 
+            resources.ApplyResources(this.DeletePolygonButton, "DeletePolygonButton");
+            this.DeletePolygonButton.Name = "DeletePolygonButton";
+            this.DeletePolygonButton.UseVisualStyleBackColor = true;
+            this.DeletePolygonButton.Click += new System.EventHandler(this.DeletePolygonButton_Click);
+            // 
+            // tab2
+            // 
+            this.tab2.BackColor = System.Drawing.SystemColors.Control;
+            this.tab2.Controls.Add(this.newPolygonGroupBox);
+            resources.ApplyResources(this.tab2, "tab2");
+            this.tab2.Name = "tab2";
+            // 
+            // newPolygonGroupBox
+            // 
+            this.newPolygonGroupBox.Controls.Add(this.generatePolygonButton);
+            this.newPolygonGroupBox.Controls.Add(this.label3);
+            this.newPolygonGroupBox.Controls.Add(this.sideLengthTextBox);
+            this.newPolygonGroupBox.Controls.Add(this.label2);
+            this.newPolygonGroupBox.Controls.Add(this.verticesNumberTextBox);
+            this.newPolygonGroupBox.Controls.Add(this.label1);
+            this.newPolygonGroupBox.Controls.Add(this.centreYTextBox);
+            this.newPolygonGroupBox.Controls.Add(this.centreXTextBox);
+            resources.ApplyResources(this.newPolygonGroupBox, "newPolygonGroupBox");
+            this.newPolygonGroupBox.Name = "newPolygonGroupBox";
+            this.newPolygonGroupBox.TabStop = false;
             // 
             // generatePolygonButton
             // 
@@ -189,41 +230,12 @@
             resources.ApplyResources(this.centreXTextBox, "centreXTextBox");
             this.centreXTextBox.Name = "centreXTextBox";
             // 
-            // groupBox1
+            // deleteRelation
             // 
-            this.groupBox1.Controls.Add(this.RemoveVertexButton);
-            this.groupBox1.Controls.Add(this.DeletePolygonButton);
-            resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.TabStop = false;
-            // 
-            // RemoveVertexButton
-            // 
-            resources.ApplyResources(this.RemoveVertexButton, "RemoveVertexButton");
-            this.RemoveVertexButton.Name = "RemoveVertexButton";
-            this.RemoveVertexButton.UseVisualStyleBackColor = true;
-            this.RemoveVertexButton.Click += new System.EventHandler(this.RemoveVertexButton_Click);
-            // 
-            // DeletePolygonButton
-            // 
-            resources.ApplyResources(this.DeletePolygonButton, "DeletePolygonButton");
-            this.DeletePolygonButton.Name = "DeletePolygonButton";
-            this.DeletePolygonButton.UseVisualStyleBackColor = true;
-            this.DeletePolygonButton.Click += new System.EventHandler(this.DeletePolygonButton_Click);
-            // 
-            // bitMap
-            // 
-            this.bitMap.BackColor = System.Drawing.Color.White;
-            this.bitMap.Cursor = System.Windows.Forms.Cursors.Cross;
-            resources.ApplyResources(this.bitMap, "bitMap");
-            this.bitMap.Name = "bitMap";
-            this.bitMap.TabStop = false;
-            this.bitMap.Paint += new System.Windows.Forms.PaintEventHandler(this.BitMap_Paint);
-            this.bitMap.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseClick);
-            this.bitMap.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseDoubleClick);
-            this.bitMap.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseDown);
-            this.bitMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseMove);
-            this.bitMap.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BitMap_MouseUp);
+            resources.ApplyResources(this.deleteRelation, "deleteRelation");
+            this.deleteRelation.Name = "deleteRelation";
+            this.deleteRelation.UseVisualStyleBackColor = true;
+            this.deleteRelation.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
@@ -234,18 +246,17 @@
             this.Name = "Form1";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.EditionGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bitMap)).EndInit();
+            this.menuControl.ResumeLayout(false);
+            this.tab1.ResumeLayout(false);
             this.RelationGroupBox.ResumeLayout(false);
             this.RelationGroupBox.PerformLayout();
-            this.chooseRelationGroupBox.ResumeLayout(false);
-            this.chooseRelationGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.perpendicularityPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.equalityPictureBox)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bitMap)).EndInit();
+            this.deleteGroupBox.ResumeLayout(false);
+            this.tab2.ResumeLayout(false);
+            this.newPolygonGroupBox.ResumeLayout(false);
+            this.newPolygonGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -254,25 +265,26 @@
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.PictureBox bitMap;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.GroupBox EditionGroupBox;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TabControl menuControl;
+        private System.Windows.Forms.TabPage tab1;
+        private System.Windows.Forms.GroupBox RelationGroupBox;
+        private System.Windows.Forms.Label chooseRelationEdgeLabel;
+        private System.Windows.Forms.PictureBox perpendicularityPictureBox;
+        private System.Windows.Forms.PictureBox equalityPictureBox;
+        private System.Windows.Forms.GroupBox deleteGroupBox;
+        private System.Windows.Forms.Button DeleteVertexButton;
+        private System.Windows.Forms.Button DeletePolygonButton;
+        private System.Windows.Forms.TabPage tab2;
+        private System.Windows.Forms.GroupBox newPolygonGroupBox;
+        private System.Windows.Forms.Button generatePolygonButton;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox sideLengthTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox verticesNumberTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox centreYTextBox;
         private System.Windows.Forms.TextBox centreXTextBox;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button RemoveVertexButton;
-        private System.Windows.Forms.Button DeletePolygonButton;
-        private System.Windows.Forms.TextBox sideLengthTextBox;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button generatePolygonButton;
-        private System.Windows.Forms.GroupBox RelationGroupBox;
-        private System.Windows.Forms.Label chooseRelationEdgeLabel;
-        private System.Windows.Forms.GroupBox chooseRelationGroupBox;
-        private System.Windows.Forms.PictureBox equalityPictureBox;
-        private System.Windows.Forms.PictureBox perpendicularityPictureBox;
+        private System.Windows.Forms.Button deleteRelation;
     }
 }
 

@@ -88,7 +88,7 @@ namespace GraphEditor
             }
             e.Graphics.DrawImage(canvas, 0, 0);
 
-            RemoveVertexButton.Enabled = selectedVertex != null && currentPolygon.Count > 3;
+            DeleteVertexButton.Enabled = selectedVertex != null && currentPolygon.Count > 3;
         }
 
 
@@ -302,7 +302,7 @@ namespace GraphEditor
                 
                 if (selectedVertex != null)
                 {
-                    RemoveVertexButton_Click(null, null);
+                    DeleteVertexButton_Click(null, null);
                 }
                 else
                 {
@@ -313,7 +313,7 @@ namespace GraphEditor
 
         // Right section
         /***************************************************************************************/
-        private void RemoveVertexButton_Click(object sender, EventArgs e)
+        private void DeleteVertexButton_Click(object sender, EventArgs e)
         {
             RemoveVertex();
         }
@@ -403,6 +403,11 @@ namespace GraphEditor
                     chooseRelationEdgeLabel.Visible = true;
                 }
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

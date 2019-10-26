@@ -78,7 +78,7 @@ namespace GraphEditor
             isPolygonSelected = false;
             selectedEdgeVertex = null;
             selectedVertex = null;
-            RemoveVertexButton.Enabled = false;
+            DeleteVertexButton.Enabled = false;
         }
 
         private void TurnOffAddPolygonMode()
@@ -146,7 +146,7 @@ namespace GraphEditor
                 selectedVertex.prev.next = selectedVertex.next;
 
                 selectedVertex = null;
-                RemoveVertexButton.Enabled = false;
+                DeleteVertexButton.Enabled = false;
                 bitMap.Invalidate();
             }
         }
