@@ -19,7 +19,6 @@ namespace GraphEditor
         private Vertex selectedVertex;
         private readonly Brush selectedVertexBrush = Brushes.Red;
         private Vertex selectedEdgeVertex;
-        private readonly Brush selectedEdgeBrush = Brushes.DarkBlue;
         private bool isPolygonSelected;
 
         private readonly List<LinkedList<Vertex>> polygons;
@@ -28,22 +27,58 @@ namespace GraphEditor
 
         private bool mouseDownAndUpDetached;
 
+
+        /// Drawing polygons ---------------------------------------------------------------------------------
         private void DrawNormalPolygon(Graphics canvasGraphics, LinkedList<Vertex> polygon)
         {
             canvasGraphics.FillPolygon(Brushes.White, polygon.Select(v => v.Point).ToArray());
             foreach (var v in polygon)
             {
                 canvas.DrawLine(v, v.next, Color.Black);
+                if (v.IsInRelation())
+                {
+                    HandleDrawingRelationIcon(canvasGraphics, v);
+                }
                 vertexRectangle.Location = v.Point + locationAdjustment;
                 canvasGraphics.FillEllipse(Brushes.Black, vertexRectangle);
             }
         }
 
-        private void DrawRelationIcon(Graphics graphics, Point p, Relation r)
+        private void DrawSelectedPolygon(Graphics canvasGraphics)
         {
+            canvasGraphics.FillPolygon(Brushes.LightGreen, currentPolygon.Select(v => v.Point).ToArray());
+            foreach (Vertex v in currentPolygon)
+            {
+                canvas.DrawLine(v.Point, v.next.Point, Color.Black);
+                if (v.IsInRelation())
+                {
+                    HandleDrawingRelationIcon(canvasGraphics, v);
+                }
 
+                vertexRectangle.Location = v.Point + locationAdjustment;
+                canvasGraphics.FillEllipse(v == selectedVertex ? selectedVertexBrush : Brushes.Black,
+                vertexRectangle);
+            }
+        }
+
+        private void DrawUnfinishedPolygon(Graphics canvasGraphics)
+        {
+            var mousePos = bitMap.PointToClient(MousePosition);
+            foreach (Vertex v in currentPolygon)
+            {
+                canvas.DrawLine(v.Point, v.next?.Point ?? mousePos, Color.Black);
+                vertexRectangle.Location = v.Point + locationAdjustment;
+                canvasGraphics.FillEllipse(Brushes.Black, vertexRectangle);
+            }
+        }
+
+        private void HandleDrawingRelationIcon(Graphics graphics, Vertex v)
+        {
+            var p1 = v.Point;
+            var p2 = v.next.Point;
+            Point p = new Point((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2);
             Rectangle rect = new Rectangle(p.X - relationIconSize / 2, p.Y - relationIconSize / 2, relationIconSize, relationIconSize);
-            if (r.GetType() == typeof(EqualLengthRelation))
+            if (v.ParentRelation.GetType() == typeof(EqualLengthRelation))
             {
                 graphics.DrawIcon(Properties.Resources.Equality481, rect);
             }
@@ -53,6 +88,10 @@ namespace GraphEditor
             }
         }
 
+        /// End drawing polygons ---------------------------------------------------------------------------------
+
+
+        /// Polygon data -------------------------------------------------------------------------------------
         private void AddNewPolygon(Point firstVertexLocation)
         {
             LinkedList<Vertex> newPolygon = new LinkedList<Vertex>();
@@ -73,13 +112,6 @@ namespace GraphEditor
             bitMap.MouseDown -= BitMap_MouseDown;
             bitMap.MouseUp -= BitMap_MouseUp;
         }
-        private void ClearAllSelection()
-        {
-            isPolygonSelected = false;
-            selectedEdgeVertex = null;
-            selectedVertex = null;
-            DeleteVertexButton.Enabled = false;
-        }
 
         private void TurnOffAddPolygonMode()
         {
@@ -89,6 +121,50 @@ namespace GraphEditor
             bitMap.MouseUp += BitMap_MouseUp;
             mouseDownAndUpDetached = false;
         }
+
+        private void ClearAllSelection()
+        {
+            isPolygonSelected = false;
+            selectedEdgeVertex = null;
+            selectedVertex = null;
+            DeleteVertexButton.Enabled = false;
+        }
+
+        // ---------------------------------------------------
+        private void DeletePolygon()
+        {
+            ClearAllSelection();
+            polygons.Remove(currentPolygon);
+            GetNewCurrentPolygon();
+            if (inAddPolygonMode)
+            {
+                TurnOffAddPolygonMode();
+            }
+        }
+
+        private void GetNewCurrentPolygon()
+        {
+            if (polygons.Count > 0)
+            {
+                currentPolygon = polygons.Last();
+                if (mouseDownAndUpDetached)
+                {
+                    bitMap.MouseDown += BitMap_MouseDown;
+                    bitMap.MouseUp += BitMap_MouseUp;
+                    mouseDownAndUpDetached = false;
+                }
+            }
+            else
+            {
+                currentPolygon = null;
+                bitMap.MouseDown -= BitMap_MouseDown;
+                bitMap.MouseUp -= BitMap_MouseUp;
+                mouseDownAndUpDetached = true;
+            }
+        }
+        /// End polygon data ---------------------------------------------------------------------------------
+
+
 
         private Vertex GetVertexAtPosition(Point position)
         {
@@ -137,11 +213,43 @@ namespace GraphEditor
             return (xAdjustment, yAdjustment);
         }
 
+
+        // -------------------------------------------------------------------
+        private void AddVertex(MouseEventArgs e)
+        {
+            LinkedListNode<Vertex> firstEdgeVertex = GetEdgeVertex(e.Location);
+            if (firstEdgeVertex != null)
+            {
+                var v1 = firstEdgeVertex.Value;
+                var v2 = v1.next;
+                if (v1.IsInRelation())
+                {
+                    v1.InvokeOnRemoveRelation();
+                }
+
+                var newVertex = new Vertex(e.Location, v1, v2);
+                v1.next = newVertex;
+                v2.prev = newVertex;
+
+                currentPolygon.AddAfter(firstEdgeVertex, newVertex);
+                bitMap.Invalidate();
+            }
+        }
+
         private void RemoveVertex()
         {
             if (currentPolygon.Count > 3)
             {
                 currentPolygon.Remove(selectedVertex);
+                if (selectedVertex.IsInRelation())
+                {
+                    selectedVertex.InvokeOnRemoveRelation();
+                }
+                if (selectedVertex.prev.IsInRelation())
+                {
+                    selectedVertex.prev.InvokeOnRemoveRelation();
+                }
+
                 selectedVertex.next.prev = selectedVertex.prev;
                 selectedVertex.prev.next = selectedVertex.next;
 
@@ -151,36 +259,6 @@ namespace GraphEditor
             }
         }
 
-        private void DeletePolygon()
-        {
-            ClearAllSelection();
-            polygons.Remove(currentPolygon);
-            GetNewCurrentPolygon();
-            if (inAddPolygonMode)
-            {
-                TurnOffAddPolygonMode();
-            }
-        }
-
-        private void GetNewCurrentPolygon()
-        {
-            if (polygons.Count > 0)
-            {
-                currentPolygon = polygons.Last();
-                if (mouseDownAndUpDetached)
-                {
-                    bitMap.MouseDown += BitMap_MouseDown;
-                    bitMap.MouseUp += BitMap_MouseUp;
-                    mouseDownAndUpDetached = false;
-                }
-            }
-            else
-            {
-                currentPolygon = null;
-                bitMap.MouseDown -= BitMap_MouseDown;
-                bitMap.MouseUp -= BitMap_MouseUp;
-                mouseDownAndUpDetached = true;
-            }
-        }
+       // ---------------------------------------------------------------------------------
     }
 }

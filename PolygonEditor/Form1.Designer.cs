@@ -19,7 +19,6 @@
 
                 canvas.Dispose();
                 selectedVertexBrush.Dispose();
-                selectedEdgeBrush.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -38,9 +37,10 @@
             this.menuControl = new System.Windows.Forms.TabControl();
             this.tab1 = new System.Windows.Forms.TabPage();
             this.RelationGroupBox = new System.Windows.Forms.GroupBox();
-            this.chooseRelationEdgeLabel = new System.Windows.Forms.Label();
             this.perpendicularityPictureBox = new System.Windows.Forms.PictureBox();
             this.equalityPictureBox = new System.Windows.Forms.PictureBox();
+            this.chooseRelationEdgeLabel = new System.Windows.Forms.Label();
+            this.deleteRelation = new System.Windows.Forms.Button();
             this.deleteGroupBox = new System.Windows.Forms.GroupBox();
             this.DeleteVertexButton = new System.Windows.Forms.Button();
             this.DeletePolygonButton = new System.Windows.Forms.Button();
@@ -54,7 +54,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.centreYTextBox = new System.Windows.Forms.TextBox();
             this.centreXTextBox = new System.Windows.Forms.TextBox();
-            this.deleteRelation = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bitMap)).BeginInit();
             this.menuControl.SuspendLayout();
@@ -115,15 +114,6 @@
             this.RelationGroupBox.Name = "RelationGroupBox";
             this.RelationGroupBox.TabStop = false;
             // 
-            // chooseRelationEdgeLabel
-            // 
-            resources.ApplyResources(this.chooseRelationEdgeLabel, "chooseRelationEdgeLabel");
-            this.chooseRelationEdgeLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.chooseRelationEdgeLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chooseRelationEdgeLabel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.chooseRelationEdgeLabel.Name = "chooseRelationEdgeLabel";
-            this.chooseRelationEdgeLabel.UseWaitCursor = true;
-            // 
             // perpendicularityPictureBox
             // 
             this.perpendicularityPictureBox.BackColor = System.Drawing.SystemColors.ButtonHighlight;
@@ -144,12 +134,28 @@
             this.equalityPictureBox.TabStop = false;
             this.equalityPictureBox.Click += new System.EventHandler(this.equalityPictureBox_Click);
             // 
+            // chooseRelationEdgeLabel
+            // 
+            resources.ApplyResources(this.chooseRelationEdgeLabel, "chooseRelationEdgeLabel");
+            this.chooseRelationEdgeLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.chooseRelationEdgeLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chooseRelationEdgeLabel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.chooseRelationEdgeLabel.Name = "chooseRelationEdgeLabel";
+            this.chooseRelationEdgeLabel.UseWaitCursor = true;
+            // 
+            // deleteRelation
+            // 
+            resources.ApplyResources(this.deleteRelation, "deleteRelation");
+            this.deleteRelation.Name = "deleteRelation";
+            this.deleteRelation.UseVisualStyleBackColor = true;
+            this.deleteRelation.Click += new System.EventHandler(this.deleteRelation_Click);
+            // 
             // deleteGroupBox
             // 
-            resources.ApplyResources(this.deleteGroupBox, "deleteGroupBox");
             this.deleteGroupBox.BackColor = System.Drawing.SystemColors.Control;
             this.deleteGroupBox.Controls.Add(this.DeleteVertexButton);
             this.deleteGroupBox.Controls.Add(this.DeletePolygonButton);
+            resources.ApplyResources(this.deleteGroupBox, "deleteGroupBox");
             this.deleteGroupBox.Name = "deleteGroupBox";
             this.deleteGroupBox.TabStop = false;
             // 
@@ -229,13 +235,6 @@
             // 
             resources.ApplyResources(this.centreXTextBox, "centreXTextBox");
             this.centreXTextBox.Name = "centreXTextBox";
-            // 
-            // deleteRelation
-            // 
-            resources.ApplyResources(this.deleteRelation, "deleteRelation");
-            this.deleteRelation.Name = "deleteRelation";
-            this.deleteRelation.UseVisualStyleBackColor = true;
-            this.deleteRelation.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 

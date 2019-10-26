@@ -214,7 +214,7 @@
     <value>NoControl</value>
   </data>
   <data name="chooseRelationEdgeLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-1, 94</value>
+    <value>0, 100</value>
   </data>
   <data name="chooseRelationEdgeLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 15</value>
@@ -276,11 +276,8 @@
   <data name="&gt;&gt;deleteRelation.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="RelationGroupBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
   <data name="RelationGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>3, 119</value>
   </data>
   <data name="RelationGroupBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>130, 182</value>
@@ -290,6 +287,9 @@
   </data>
   <data name="RelationGroupBox.Text" xml:space="preserve">
     <value>Relacje</value>
+  </data>
+  <data name="RelationGroupBox.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;RelationGroupBox.Name" xml:space="preserve">
     <value>RelationGroupBox</value>
@@ -302,9 +302,6 @@
   </data>
   <data name="&gt;&gt;RelationGroupBox.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="deleteGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
   </data>
   <data name="DeleteVertexButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -322,7 +319,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="DeleteVertexButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 28</value>
+    <value>124, 28</value>
   </data>
   <data name="DeleteVertexButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -355,7 +352,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="DeletePolygonButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 27</value>
+    <value>124, 27</value>
   </data>
   <data name="DeletePolygonButton.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -375,11 +372,14 @@
   <data name="&gt;&gt;DeletePolygonButton.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="deleteGroupBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
   <data name="deleteGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 218</value>
+    <value>3, 3</value>
   </data>
   <data name="deleteGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 99</value>
+    <value>130, 99</value>
   </data>
   <data name="deleteGroupBox.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>

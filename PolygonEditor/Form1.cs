@@ -26,7 +26,8 @@ namespace GraphEditor
             var v2 = v1.next;
             var v3 = v2.next;
             var v4 = v3.next;
-            var relation = new EqualLengthRelation(v1, v2, v3, v4);
+            var relation1 = new EqualLengthRelation(v1, v2, v3, v4);
+            var realation2 = new PerpendicularityRelation(v2, v3, v4, v1);
 
 
             centreXTextBox.Text = center.X.ToString();
@@ -54,36 +55,13 @@ namespace GraphEditor
                     }
                 }
 
-
                 if (inAddPolygonMode)
                 {
-                    var mousePos = bitMap.PointToClient(MousePosition);
-                    foreach (Vertex v in currentPolygon)
-                    {
-                        canvas.DrawLine(v.Point, v.next?.Point ?? mousePos, Color.Black);
-                        vertexRectangle.Location = v.Point + locationAdjustment;
-                        canvasGraphics.FillEllipse(Brushes.Black, vertexRectangle);
-                    }
+                    DrawUnfinishedPolygon(canvasGraphics);
                 }
                 else
                 {
-                    canvasGraphics.FillPolygon(Brushes.LightGreen, currentPolygon.Select(v => v.Point).ToArray());
-                    foreach (Vertex v in currentPolygon)
-                    {
-                        canvas.DrawLine(v.Point, v.next.Point, Color.Black);
-                        if (v.IsInRelation())
-                        {
-                            var p1 = v.Point;
-                            var p2 = v.next.Point;
-                            Point p = new Point((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2);
-                            DrawRelationIcon(canvasGraphics, p, v.ParentRelation);
-                        }
-
-
-                        vertexRectangle.Location = v.Point + locationAdjustment;
-                        canvasGraphics.FillEllipse(v == selectedVertex ? selectedVertexBrush : Brushes.Black, 
-                        vertexRectangle);
-                    }
+                    DrawSelectedPolygon(canvasGraphics);
                 }
             }
             e.Graphics.DrawImage(canvas, 0, 0);
@@ -91,7 +69,7 @@ namespace GraphEditor
             DeleteVertexButton.Enabled = selectedVertex != null && currentPolygon.Count > 3;
         }
 
-
+       
 
         private void BitMap_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -107,7 +85,7 @@ namespace GraphEditor
                     }
                 }
             }
-            else if (e.Button == MouseButtons.Right)
+            else if (e.Button == MouseButtons.Right && Control.ModifierKeys != Keys.Control)
             {
                 if (inAddPolygonMode)
                 {
@@ -116,20 +94,8 @@ namespace GraphEditor
                 }
                 else if (GetVertexAtPosition(e.Location) == null)
                 {
-                    LinkedListNode<Vertex> firstEdgeVertex = GetEdgeVertex(e.Location);
-                    if (firstEdgeVertex != null)
-                    {
-                        var v1 = firstEdgeVertex.Value;
-                        var v2 = v1.next;
-                        var newVertex = new Vertex(e.Location, v1, v2);
-                        v1.next = newVertex;
-                        v2.prev = newVertex;
-
-                        currentPolygon.AddAfter(firstEdgeVertex, newVertex);
-                        bitMap.Invalidate();
-                    }
+                    AddVertex(e);
                 }
-                // TODO : relations here
             }
         }
 
@@ -163,6 +129,10 @@ namespace GraphEditor
                         bitMap.Invalidate();
                     }
                 }
+            }
+            else if(e.Button == MouseButtons.Right && Control.ModifierKeys == Keys.Control)
+            {
+                // TODO : relations here
             }
         }
 
@@ -405,7 +375,7 @@ namespace GraphEditor
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void deleteRelation_Click(object sender, EventArgs e)
         {
 
         }

@@ -86,6 +86,11 @@ namespace GraphEditor
             next.childRelation = null;
         }
 
+        public void InvokeOnRemoveRelation()
+        {
+            this.parentRelation.OnRemoveRelation();
+        }
+
         public bool IsInRelation()
         {
             return this.parentRelation != null;
