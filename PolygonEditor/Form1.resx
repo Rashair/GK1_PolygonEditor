@@ -240,40 +240,40 @@
   <data name="&gt;&gt;chooseRelationEdgeLabel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="deleteRelation.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="deleteRelationButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Bottom</value>
   </data>
-  <data name="deleteRelation.Enabled" type="System.Boolean, mscorlib">
+  <data name="deleteRelationButton.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="deleteRelation.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="deleteRelationButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="deleteRelation.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="deleteRelationButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 151</value>
   </data>
-  <data name="deleteRelation.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="deleteRelationButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="deleteRelation.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="deleteRelationButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>124, 28</value>
   </data>
-  <data name="deleteRelation.TabIndex" type="System.Int32, mscorlib">
+  <data name="deleteRelationButton.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="deleteRelation.Text" xml:space="preserve">
+  <data name="deleteRelationButton.Text" xml:space="preserve">
     <value>Usuń relację</value>
   </data>
-  <data name="&gt;&gt;deleteRelation.Name" xml:space="preserve">
-    <value>deleteRelation</value>
+  <data name="&gt;&gt;deleteRelationButton.Name" xml:space="preserve">
+    <value>deleteRelationButton</value>
   </data>
-  <data name="&gt;&gt;deleteRelation.Type" xml:space="preserve">
+  <data name="&gt;&gt;deleteRelationButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;deleteRelation.Parent" xml:space="preserve">
+  <data name="&gt;&gt;deleteRelationButton.Parent" xml:space="preserve">
     <value>RelationGroupBox</value>
   </data>
-  <data name="&gt;&gt;deleteRelation.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;deleteRelationButton.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="RelationGroupBox.Location" type="System.Drawing.Point, System.Drawing">

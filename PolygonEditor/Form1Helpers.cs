@@ -17,8 +17,9 @@ namespace GraphEditor
         private Rectangle vertexRectangle;
 
         private Vertex selectedVertex;
-        private readonly Brush selectedVertexBrush = Brushes.Red;
-        private Vertex selectedEdgeVertex;
+        private Vertex selectedMoveEdgeVertex;
+        private Vertex selectedRelationEdgeVertex;
+        private Type selectedRelationType;
         private bool isPolygonSelected;
 
         private readonly List<LinkedList<Vertex>> polygons;
@@ -49,14 +50,14 @@ namespace GraphEditor
             canvasGraphics.FillPolygon(Brushes.LightGreen, currentPolygon.Select(v => v.Point).ToArray());
             foreach (Vertex v in currentPolygon)
             {
-                canvas.DrawLine(v.Point, v.next.Point, Color.Black);
+                canvas.DrawLine(v.Point, v.next.Point, GetEdgeColor(v));
                 if (v.IsInRelation())
                 {
                     HandleDrawingRelationIcon(canvasGraphics, v);
                 }
 
                 vertexRectangle.Location = v.Point + locationAdjustment;
-                canvasGraphics.FillEllipse(v == selectedVertex ? selectedVertexBrush : Brushes.Black,
+                canvasGraphics.FillEllipse(v == selectedVertex ? Brushes.Red : Brushes.Black,
                 vertexRectangle);
             }
         }
@@ -86,6 +87,11 @@ namespace GraphEditor
             {
                 graphics.DrawIcon(Properties.Resources.Perpendicularity481, rect);
             }
+        }
+
+        private Color GetEdgeColor(Vertex v)
+        {
+            return v == selectedRelationEdgeVertex ? Color.Blue : Color.Black;
         }
 
         /// End drawing polygons ---------------------------------------------------------------------------------
@@ -125,7 +131,8 @@ namespace GraphEditor
         private void ClearAllSelection()
         {
             isPolygonSelected = false;
-            selectedEdgeVertex = null;
+            selectedMoveEdgeVertex = null;
+            selectedRelationEdgeVertex = null;
             selectedVertex = null;
             DeleteVertexButton.Enabled = false;
         }
@@ -162,8 +169,39 @@ namespace GraphEditor
                 mouseDownAndUpDetached = true;
             }
         }
-        /// End polygon data ---------------------------------------------------------------------------------
 
+        // Generate polygon
+        private bool TryParseAllParameters(out Point centre, out int numberOfPoints, out int sideLength)
+        {
+            centre = new Point();
+            numberOfPoints = 0;
+            sideLength = 0;
+
+            if (!int.TryParse(centreXTextBox.Text, out int x))
+            {
+                return false;
+            }
+            if (!int.TryParse(centreYTextBox.Text, out int y))
+            {
+                return false;
+            }
+            centre.X = x;
+            centre.Y = y;
+
+            if (!int.TryParse(verticesNumberTextBox.Text, out numberOfPoints))
+            {
+                return false;
+            }
+
+            if (!int.TryParse(sideLengthTextBox.Text, out sideLength))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// End polygon data ---------------------------------------------------------------------------------
 
 
         private Vertex GetVertexAtPosition(Point position)
@@ -187,7 +225,7 @@ namespace GraphEditor
             return result;
         }
 
-        private LinkedListNode<Vertex> GetEdgeVertex(Point position)
+        private LinkedListNode<Vertex> GetEdgeVertex(Point position, double edgeEps = eps)
         {
             for (var currentNode = currentPolygon.First; currentNode != null; currentNode = currentNode.Next)
             {
@@ -259,6 +297,81 @@ namespace GraphEditor
             }
         }
 
-       // ---------------------------------------------------------------------------------
+
+        // Relations ---------------------------------------------------------------------------------
+
+        private void ChooseRelation(Type chosenRelationType)
+        {
+            if (selectedRelationEdgeVertex == null)
+            {
+                MessageBox.Show("Nieprzewidziany wyjątek", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
+
+            var chooseColor = SystemColors.GradientActiveCaption;
+            if (chosenRelationType == typeof(EqualLengthRelation))
+            {
+                equalityPictureBox.BackColor = chooseColor;
+                perpendicularityPictureBox.BackColor = SystemColors.ButtonHighlight;
+                
+            }
+            else
+            {
+                perpendicularityPictureBox.BackColor = chooseColor;
+                equalityPictureBox.BackColor = SystemColors.ButtonHighlight;
+            }
+
+            selectedRelationType = chosenRelationType;
+            if (selectedRelationEdgeVertex.IsInRelation())
+            {
+                deleteRelationButton.Enabled = true;
+                if (selectedRelationEdgeVertex.ParentRelation.GetType() != selectedRelationType)
+                {
+                    SwapRelationsForSelected();
+                }
+            }
+            else
+            {
+                chooseRelationEdgeLabel.Visible = true;
+            }
+
+            RelationGroupBox.Invalidate();
+            bitMap.Invalidate();
+        }
+
+        private void SwapRelationsForSelected()
+        {
+            var (v1, v2, v3, v4) = selectedRelationEdgeVertex.ParentRelation.GetMembersOfRelation();
+            selectedRelationEdgeVertex.InvokeOnRemoveRelation();
+            AddRelationForSelected(v1, v2, v3, v4);
+        }
+
+        private void AddRelationForSelected(Vertex v1, Vertex v2, Vertex v3, Vertex v4)
+        {
+            if (selectedRelationType == typeof(EqualLengthRelation))
+            {
+                _ = new EqualLengthRelation(v1, v2, v3, v4);
+            }
+            else
+            {
+                _ = new PerpendicularityRelation(v1, v2, v3, v4);
+            }
+        }
+
+
+        private void RelationBoxHide()
+        {
+            RelationGroupBox.Visible = false;
+            OnChangingToEmptyRelation();
+            RelationGroupBox.Invalidate();
+        }
+
+        private void OnChangingToEmptyRelation()
+        {
+            deleteRelationButton.Enabled = false;
+            chooseRelationEdgeLabel.Visible = false;
+            perpendicularityPictureBox.BackColor = SystemColors.ButtonHighlight;
+            equalityPictureBox.BackColor = SystemColors.ButtonHighlight;
+        }
     }
 }

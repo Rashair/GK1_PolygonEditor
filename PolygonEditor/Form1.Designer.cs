@@ -18,7 +18,6 @@
                 components.Dispose();
 
                 canvas.Dispose();
-                selectedVertexBrush.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -40,7 +39,7 @@
             this.perpendicularityPictureBox = new System.Windows.Forms.PictureBox();
             this.equalityPictureBox = new System.Windows.Forms.PictureBox();
             this.chooseRelationEdgeLabel = new System.Windows.Forms.Label();
-            this.deleteRelation = new System.Windows.Forms.Button();
+            this.deleteRelationButton = new System.Windows.Forms.Button();
             this.deleteGroupBox = new System.Windows.Forms.GroupBox();
             this.DeleteVertexButton = new System.Windows.Forms.Button();
             this.DeletePolygonButton = new System.Windows.Forms.Button();
@@ -109,7 +108,7 @@
             this.RelationGroupBox.Controls.Add(this.perpendicularityPictureBox);
             this.RelationGroupBox.Controls.Add(this.equalityPictureBox);
             this.RelationGroupBox.Controls.Add(this.chooseRelationEdgeLabel);
-            this.RelationGroupBox.Controls.Add(this.deleteRelation);
+            this.RelationGroupBox.Controls.Add(this.deleteRelationButton);
             resources.ApplyResources(this.RelationGroupBox, "RelationGroupBox");
             this.RelationGroupBox.Name = "RelationGroupBox";
             this.RelationGroupBox.TabStop = false;
@@ -122,7 +121,7 @@
             resources.ApplyResources(this.perpendicularityPictureBox, "perpendicularityPictureBox");
             this.perpendicularityPictureBox.Name = "perpendicularityPictureBox";
             this.perpendicularityPictureBox.TabStop = false;
-            this.perpendicularityPictureBox.Click += new System.EventHandler(this.perpendicularityPictureBox_Click);
+            this.perpendicularityPictureBox.Click += new System.EventHandler(this.PerpendicularityPictureBox_Click);
             // 
             // equalityPictureBox
             // 
@@ -132,7 +131,7 @@
             resources.ApplyResources(this.equalityPictureBox, "equalityPictureBox");
             this.equalityPictureBox.Name = "equalityPictureBox";
             this.equalityPictureBox.TabStop = false;
-            this.equalityPictureBox.Click += new System.EventHandler(this.equalityPictureBox_Click);
+            this.equalityPictureBox.Click += new System.EventHandler(this.EqualityPictureBox_Click);
             // 
             // chooseRelationEdgeLabel
             // 
@@ -143,12 +142,12 @@
             this.chooseRelationEdgeLabel.Name = "chooseRelationEdgeLabel";
             this.chooseRelationEdgeLabel.UseWaitCursor = true;
             // 
-            // deleteRelation
+            // deleteRelationButton
             // 
-            resources.ApplyResources(this.deleteRelation, "deleteRelation");
-            this.deleteRelation.Name = "deleteRelation";
-            this.deleteRelation.UseVisualStyleBackColor = true;
-            this.deleteRelation.Click += new System.EventHandler(this.deleteRelation_Click);
+            resources.ApplyResources(this.deleteRelationButton, "deleteRelationButton");
+            this.deleteRelationButton.Name = "deleteRelationButton";
+            this.deleteRelationButton.UseVisualStyleBackColor = true;
+            this.deleteRelationButton.Click += new System.EventHandler(this.DeleteRelationButton_Click);
             // 
             // deleteGroupBox
             // 
@@ -283,7 +282,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox centreYTextBox;
         private System.Windows.Forms.TextBox centreXTextBox;
-        private System.Windows.Forms.Button deleteRelation;
+        private System.Windows.Forms.Button deleteRelationButton;
     }
 }
 

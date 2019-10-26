@@ -44,10 +44,14 @@ namespace GraphEditor
             this.DeleteVertices += deleteFromRelation;
         }
 
-
         public void OnRemoveRelation()
         {
             this.DeleteVertices.Invoke();
+        }
+
+        public (Vertex v1, Vertex v2, Vertex v3, Vertex v4) GetMembersOfRelation()
+        {
+            return (v1, v2, v3, v4);
         }
 
         public abstract void ImposeRelation();

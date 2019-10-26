@@ -23,6 +23,13 @@ namespace GraphEditor
             return Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI;
         }
 
+        public static Point GetNewPointFromAngleAndDistance(Point p1, double angle, double distance)
+        {
+            int x = (int)(p1.X + distance*Math.Cos(angle));    // unchanged
+            int y = (int)(p1.Y + distance* Math.Sin(angle));   // minus on the Sin
+            return new Point(x, y);
+        }
+
 
         // https://stackoverflow.com/a/14998816/6841224
         // The function counts the number of sides of the polygon that:

@@ -88,7 +88,10 @@ namespace GraphEditor
 
         public void InvokeOnRemoveRelation()
         {
-            this.parentRelation.OnRemoveRelation();
+            if (IsInRelation())
+            {
+                this.parentRelation.OnRemoveRelation();
+            }
         }
 
         public bool IsInRelation()

@@ -22,12 +22,13 @@ namespace GraphEditor
             currentPolygon = new LinkedList<Vertex>(PolygonFactory.GetRegularPolygon(center, 4));
             polygons = new List<LinkedList<Vertex>> { currentPolygon };
 
+            // Add initial relations
             Vertex v1 = currentPolygon.First.Value;
             var v2 = v1.next;
             var v3 = v2.next;
             var v4 = v3.next;
-            var relation1 = new EqualLengthRelation(v1, v2, v3, v4);
-            var realation2 = new PerpendicularityRelation(v2, v3, v4, v1);
+            _ = new EqualLengthRelation(v1, v2, v3, v4);
+            _ = new PerpendicularityRelation(v2, v3, v4, v1);
 
 
             centreXTextBox.Text = center.X.ToString();
@@ -69,7 +70,7 @@ namespace GraphEditor
             DeleteVertexButton.Enabled = selectedVertex != null && currentPolygon.Count > 3;
         }
 
-       
+
 
         private void BitMap_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -130,22 +131,65 @@ namespace GraphEditor
                     }
                 }
             }
-            else if(e.Button == MouseButtons.Right && Control.ModifierKeys == Keys.Control)
+            else if (e.Button == MouseButtons.Right && Control.ModifierKeys == Keys.Control)
             {
-                // TODO : relations here
+                Vertex edgeVertex = GetEdgeVertex(e.Location, 2*eps)?.Value;
+                bool gotTwoDifferentEdges = selectedRelationEdgeVertex != null && edgeVertex != null && 
+                    selectedRelationEdgeVertex != edgeVertex;
+                bool inChoosingEdgeMode = gotTwoDifferentEdges && chooseRelationEdgeLabel.Visible;
+                if (inChoosingEdgeMode && !edgeVertex.IsInRelation())
+                {
+                    // Adding new relation
+
+                    AddRelationForSelected(v1: selectedRelationEdgeVertex, v2: selectedRelationEdgeVertex.next,
+                        v3: edgeVertex, v4: edgeVertex.next);
+                    RelationBoxHide();
+                    RelationGroupBox.Invalidate();
+                    bitMap.Invalidate();
+                }
+                else if (inChoosingEdgeMode)
+                {
+                    MessageBox.Show("Nie możesz dodać dwóch relacji dla jednej krawędzi", "Błąd",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    if (gotTwoDifferentEdges) // We are swaping from existent relation to not null edge 
+                    {
+                        OnChangingToEmptyRelation();
+                    }
+
+                    selectedRelationEdgeVertex = edgeVertex;
+                    if (selectedRelationEdgeVertex != null)
+                    {
+                        RelationGroupBox.Visible = true;
+                        if (selectedRelationEdgeVertex.IsInRelation())
+                        {
+                            ChooseRelation(selectedRelationEdgeVertex.ParentRelation.GetType());
+                        }
+
+                        RelationGroupBox.Invalidate();
+                        bitMap.Invalidate();
+                    }
+                    else if (RelationGroupBox.Visible)
+                    {
+                        RelationBoxHide();
+                        bitMap.Invalidate();
+                    }
+                }
             }
         }
 
         private void BitMap_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right && Control.ModifierKeys != Keys.Control)
             {
                 previousMouseDownLocation = (Size)e.Location;
                 selectedVertex = GetVertexAtPosition(e.Location);
                 if (selectedVertex == null)
                 {
-                    selectedEdgeVertex = GetEdgeVertex(e.Location)?.Value;
-                    if (selectedEdgeVertex == null)
+                    selectedMoveEdgeVertex = GetEdgeVertex(e.Location)?.Value;
+                    if (selectedMoveEdgeVertex == null)
                     {
                         isPolygonSelected = !isPolygonSelected && Geometry.IsPointInsidePolygon(e.Location,
                             currentPolygon.Select(v => v.Point).ToList());
@@ -201,22 +245,22 @@ namespace GraphEditor
                     isPolygonSelected = false;
                     bitMap.Invalidate();
                 }
-                else if (selectedEdgeVertex != null)
+                else if (selectedMoveEdgeVertex != null)
                 {
                     var area = bitMap.ClientRectangle;
-                    var (xValue1, yValue1) = GetAdjustment(ref area, selectedEdgeVertex.Point);
-                    var (xValue2, yValue2) = GetAdjustment(ref area, selectedEdgeVertex.next.Point);
+                    var (xValue1, yValue1) = GetAdjustment(ref area, selectedMoveEdgeVertex.Point);
+                    var (xValue2, yValue2) = GetAdjustment(ref area, selectedMoveEdgeVertex.next.Point);
 
                     int maxXAdjustment = Math.Abs(xValue1) > Math.Abs(xValue2) ? xValue1 : xValue2;
                     int maxYAdjustment = Math.Abs(yValue1) > Math.Abs(yValue2) ? yValue1 : yValue2;
 
                     if (maxXAdjustment != 0 || maxYAdjustment != 0)
                     {
-                        selectedEdgeVertex.Offset(maxXAdjustment, maxYAdjustment);
-                        selectedEdgeVertex.next.Offset(maxXAdjustment, maxYAdjustment);
+                        selectedMoveEdgeVertex.Offset(maxXAdjustment, maxYAdjustment);
+                        selectedMoveEdgeVertex.next.Offset(maxXAdjustment, maxYAdjustment);
                     }
 
-                    selectedEdgeVertex = null;
+                    selectedMoveEdgeVertex = null;
                     bitMap.Invalidate();
                 }
                 else if (selectedVertex != null)
@@ -244,12 +288,12 @@ namespace GraphEditor
                     bitMap.Invalidate();
 
                 }
-                else if (selectedEdgeVertex != null)
+                else if (selectedMoveEdgeVertex != null)
                 {
                     var adjustment = (Size)e.Location - previousMouseDownLocation;
                     previousMouseDownLocation = (Size)e.Location;
-                    selectedEdgeVertex.Point += adjustment;
-                    selectedEdgeVertex.next.Point += adjustment;
+                    selectedMoveEdgeVertex.Point += adjustment;
+                    selectedMoveEdgeVertex.next.Point += adjustment;
                     bitMap.Invalidate();
                 }
                 else if (isPolygonSelected)
@@ -269,7 +313,7 @@ namespace GraphEditor
         {
             if (e.KeyCode == Keys.Delete)
             {
-                
+
                 if (selectedVertex != null)
                 {
                     DeleteVertexButton_Click(null, null);
@@ -281,8 +325,9 @@ namespace GraphEditor
             }
         }
 
-        // Right section
-        /***************************************************************************************/
+
+        // Right section --------------------------------------------------------------------------
+
         private void DeleteVertexButton_Click(object sender, EventArgs e)
         {
             RemoveVertex();
@@ -302,7 +347,7 @@ namespace GraphEditor
                 return;
             }
 
-            polygons.Add(new LinkedList<Vertex> ( PolygonFactory.GetRegularPolygon(centre, numOfPoints, sideLength)));
+            polygons.Add(new LinkedList<Vertex>(PolygonFactory.GetRegularPolygon(centre, numOfPoints, sideLength)));
             ClearAllSelection();
             GetNewCurrentPolygon();
             if (inAddPolygonMode)
@@ -312,72 +357,25 @@ namespace GraphEditor
             bitMap.Invalidate();
         }
 
-        private bool TryParseAllParameters(out Point centre, out int numberOfPoints, out int sideLength)
-        {
-            centre = new Point();
-            numberOfPoints = 0;
-            sideLength = 0;
-
-            if(!int.TryParse(centreXTextBox.Text, out int x))
-            {
-                return false;
-            }
-            if (!int.TryParse(centreYTextBox.Text, out int y))
-            {
-                return false;
-            }
-            centre.X = x;
-            centre.Y = y;
-
-            if (!int.TryParse(verticesNumberTextBox.Text, out numberOfPoints))
-            {
-                return false;
-            }
-
-            if (!int.TryParse(sideLengthTextBox.Text, out sideLength))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private void equalityPictureBox_Click(object sender, EventArgs e)
+        private void EqualityPictureBox_Click(object sender, EventArgs e)
         {
             ChooseRelation(typeof(EqualLengthRelation));
         }
 
-        private void perpendicularityPictureBox_Click(object sender, EventArgs e)
+        private void PerpendicularityPictureBox_Click(object sender, EventArgs e)
         {
             ChooseRelation(typeof(PerpendicularityRelation));
         }
 
-        private void ChooseRelation(Type type)
+
+        private void DeleteRelationButton_Click(object sender, EventArgs e)
         {
-            var chooseColor = SystemColors.GradientActiveCaption;
-            if(type == typeof(EqualLengthRelation))
-            {
-                equalityPictureBox.BackColor = chooseColor;
-                perpendicularityPictureBox.BackColor = SystemColors.ButtonHighlight;
-                if (!chooseRelationEdgeLabel.Visible)
-                {
-                    chooseRelationEdgeLabel.Visible = true;
-                }
-            }
-            else
-            {
-                perpendicularityPictureBox.BackColor = chooseColor;
-                equalityPictureBox.BackColor = SystemColors.ButtonHighlight;
-                if (!chooseRelationEdgeLabel.Visible)
-                {
-                    chooseRelationEdgeLabel.Visible = true;
-                }
-            }
+            selectedRelationEdgeVertex.InvokeOnRemoveRelation();
+            selectedRelationEdgeVertex = null;
+            selectedRelationType = null;
+            RelationBoxHide();
+            bitMap.Invalidate();
         }
 
-        private void deleteRelation_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
