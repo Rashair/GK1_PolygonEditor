@@ -87,9 +87,22 @@
     <Compile Include="PolygonFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Relations\EqualLengthRelation.cs" />
+    <Compile Include="Relations\PerpendicularityRelation.cs" />
+    <Compile Include="Relations\Relation.cs" />
     <Compile Include="Vertex.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include=".editorconfig" />
     <None Include="packages.config" />
@@ -128,6 +141,22 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Equality.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Perpendicularity.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Equality48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Perpendicularity48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Equality48.ico" />
+    <Content Include="Resources\Perpendicularity48.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

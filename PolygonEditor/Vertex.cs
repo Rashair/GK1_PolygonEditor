@@ -5,13 +5,16 @@ namespace GraphEditor
 {
     class Vertex : IComparable<Vertex>
     {
+        private Relation childRelation;
+        private Relation parentRelation;
+        private Point point;
+
         public const double eps = 1e-6;
         public const int radius = 15;
 
-        public Point point;
+
         public Vertex prev;
         public Vertex next;
-
 
         public Vertex(Point point, Vertex prev = null, Vertex next = null)
         {
@@ -19,7 +22,7 @@ namespace GraphEditor
             SetPrevAndNext(prev, next);
         }
 
-        public Vertex(int x, int y, Vertex prev = null, Vertex next = null)  : 
+        public Vertex(int x, int y, Vertex prev = null, Vertex next = null) :
             this(new Point(x, y), prev, next)
         {
         }
@@ -30,11 +33,69 @@ namespace GraphEditor
             this.next = next;
         }
 
+        public static implicit operator Point(Vertex v)
+        {
+            return v.Point;
+        }
+
+        public void Offset(int x, int y)
+        {
+            this.point.Offset(x, y);
+        }
+
+        public void Offset(Point p)
+        {
+            Offset(p.X, p.Y);
+        }
+
+
+        public Point Point
+        {
+            get { return this.point; }
+            set { this.point = value; }
+        }
+
+
+        public Relation ChildRelation
+        {
+            get { return childRelation; }
+            set { this.childRelation = value; }
+        }
+
+        public Relation ParentRelation
+        {
+            get { return parentRelation; }
+            set
+            {
+                this.parentRelation = value;
+                value.RegisterToRelation(RemoveRelation);
+            }
+        }
+
+        public void PreserveRelation()
+        {
+            if (IsInRelation())
+            {
+                parentRelation.PreserveRelation(this);
+            }
+        }
+
+        private void RemoveRelation()
+        {
+            this.parentRelation = null;
+            next.childRelation = null;
+        }
+
+        public bool IsInRelation()
+        {
+            return this.parentRelation != null;
+        }
+
         public int CompareTo(Vertex other)
         {
-            return point.X - other.point.X < eps ?
-                point.Y.CompareTo(other.point.Y) :
-                point.X.CompareTo(other.point.X);
+            return point.X - other.Point.X < eps ?
+               point.Y.CompareTo(other.Point.Y) :
+                point.X.CompareTo(other.Point.X);
         }
 
         public override bool Equals(object obj)

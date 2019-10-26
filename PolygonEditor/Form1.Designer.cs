@@ -19,6 +19,7 @@
 
                 canvas.Dispose();
                 selectedVertexBrush.Dispose();
+                selectedEdgeBrush.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -35,6 +36,11 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.EditionGroupBox = new System.Windows.Forms.GroupBox();
+            this.RelationGroupBox = new System.Windows.Forms.GroupBox();
+            this.chooseRelationEdgeLabel = new System.Windows.Forms.Label();
+            this.chooseRelationGroupBox = new System.Windows.Forms.GroupBox();
+            this.perpendicularityPictureBox = new System.Windows.Forms.PictureBox();
+            this.equalityPictureBox = new System.Windows.Forms.PictureBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.generatePolygonButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -51,6 +57,10 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.EditionGroupBox.SuspendLayout();
+            this.RelationGroupBox.SuspendLayout();
+            this.chooseRelationGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.perpendicularityPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.equalityPictureBox)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bitMap)).BeginInit();
@@ -71,11 +81,57 @@
             // 
             // EditionGroupBox
             // 
+            this.EditionGroupBox.Controls.Add(this.RelationGroupBox);
             this.EditionGroupBox.Controls.Add(this.groupBox2);
             this.EditionGroupBox.Controls.Add(this.groupBox1);
             resources.ApplyResources(this.EditionGroupBox, "EditionGroupBox");
             this.EditionGroupBox.Name = "EditionGroupBox";
             this.EditionGroupBox.TabStop = false;
+            // 
+            // RelationGroupBox
+            // 
+            resources.ApplyResources(this.RelationGroupBox, "RelationGroupBox");
+            this.RelationGroupBox.Controls.Add(this.chooseRelationEdgeLabel);
+            this.RelationGroupBox.Controls.Add(this.chooseRelationGroupBox);
+            this.RelationGroupBox.Name = "RelationGroupBox";
+            this.RelationGroupBox.TabStop = false;
+            // 
+            // chooseRelationEdgeLabel
+            // 
+            resources.ApplyResources(this.chooseRelationEdgeLabel, "chooseRelationEdgeLabel");
+            this.chooseRelationEdgeLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.chooseRelationEdgeLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chooseRelationEdgeLabel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.chooseRelationEdgeLabel.Name = "chooseRelationEdgeLabel";
+            this.chooseRelationEdgeLabel.UseWaitCursor = true;
+            // 
+            // chooseRelationGroupBox
+            // 
+            this.chooseRelationGroupBox.Controls.Add(this.perpendicularityPictureBox);
+            this.chooseRelationGroupBox.Controls.Add(this.equalityPictureBox);
+            resources.ApplyResources(this.chooseRelationGroupBox, "chooseRelationGroupBox");
+            this.chooseRelationGroupBox.Name = "chooseRelationGroupBox";
+            this.chooseRelationGroupBox.TabStop = false;
+            // 
+            // perpendicularityPictureBox
+            // 
+            this.perpendicularityPictureBox.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.perpendicularityPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.perpendicularityPictureBox.Image = global::GraphEditor.Properties.Resources.Perpendicularity48;
+            resources.ApplyResources(this.perpendicularityPictureBox, "perpendicularityPictureBox");
+            this.perpendicularityPictureBox.Name = "perpendicularityPictureBox";
+            this.perpendicularityPictureBox.TabStop = false;
+            this.perpendicularityPictureBox.Click += new System.EventHandler(this.perpendicularityPictureBox_Click);
+            // 
+            // equalityPictureBox
+            // 
+            this.equalityPictureBox.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.equalityPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.equalityPictureBox.Image = global::GraphEditor.Properties.Resources.Equality48;
+            resources.ApplyResources(this.equalityPictureBox, "equalityPictureBox");
+            this.equalityPictureBox.Name = "equalityPictureBox";
+            this.equalityPictureBox.TabStop = false;
+            this.equalityPictureBox.Click += new System.EventHandler(this.equalityPictureBox_Click);
             // 
             // groupBox2
             // 
@@ -180,6 +236,12 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.EditionGroupBox.ResumeLayout(false);
+            this.RelationGroupBox.ResumeLayout(false);
+            this.RelationGroupBox.PerformLayout();
+            this.chooseRelationGroupBox.ResumeLayout(false);
+            this.chooseRelationGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.perpendicularityPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.equalityPictureBox)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -206,6 +268,11 @@
         private System.Windows.Forms.TextBox sideLengthTextBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button generatePolygonButton;
+        private System.Windows.Forms.GroupBox RelationGroupBox;
+        private System.Windows.Forms.Label chooseRelationEdgeLabel;
+        private System.Windows.Forms.GroupBox chooseRelationGroupBox;
+        private System.Windows.Forms.PictureBox equalityPictureBox;
+        private System.Windows.Forms.PictureBox perpendicularityPictureBox;
     }
 }
 

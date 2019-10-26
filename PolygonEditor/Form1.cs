@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GraphEditor.Relations;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -21,6 +22,13 @@ namespace GraphEditor
             currentPolygon = new LinkedList<Vertex>(PolygonFactory.GetRegularPolygon(center, 4));
             polygons = new List<LinkedList<Vertex>> { currentPolygon };
 
+            Vertex v1 = currentPolygon.First.Value;
+            var v2 = v1.next;
+            var v3 = v2.next;
+            var v4 = v3.next;
+            var relation = new EqualLengthRelation(v1, v2, v3, v4);
+
+
             centreXTextBox.Text = center.X.ToString();
             centreYTextBox.Text = center.Y.ToString();
         }
@@ -38,37 +46,41 @@ namespace GraphEditor
             {
                 canvasGraphics.Clear(Color.White);
 
+                foreach (LinkedList<Vertex> polygon in polygons)
+                {
+                    if (polygon != currentPolygon)
+                    {
+                        DrawNormalPolygon(canvasGraphics, polygon);
+                    }
+                }
+
+
                 if (inAddPolygonMode)
                 {
-                    foreach (LinkedList<Vertex> polygon in polygons)
-                    {
-                        if (polygon != currentPolygon)
-                            DrawNormalPolygon(canvasGraphics, polygon);
-                    }
-
                     var mousePos = bitMap.PointToClient(MousePosition);
                     foreach (Vertex v in currentPolygon)
                     {
-                        canvas.DrawLine(v.point, v.next?.point ?? mousePos, Color.Black);
-
-                        vertexRectangle.Location = v.point + locationAdjustment;
+                        canvas.DrawLine(v.Point, v.next?.Point ?? mousePos, Color.Black);
+                        vertexRectangle.Location = v.Point + locationAdjustment;
                         canvasGraphics.FillEllipse(Brushes.Black, vertexRectangle);
                     }
                 }
                 else
                 {
-                    foreach (LinkedList<Vertex> polygon in polygons)
-                    {
-                        if (polygon != currentPolygon)
-                            DrawNormalPolygon(canvasGraphics, polygon);
-                    }
-
-                    canvasGraphics.FillPolygon(Brushes.LightGreen, currentPolygon.Select(v => v.point).ToArray());
+                    canvasGraphics.FillPolygon(Brushes.LightGreen, currentPolygon.Select(v => v.Point).ToArray());
                     foreach (Vertex v in currentPolygon)
                     {
-                        canvas.DrawLine(v.point, v.next.point, Color.Black);
+                        canvas.DrawLine(v.Point, v.next.Point, Color.Black);
+                        if (v.IsInRelation())
+                        {
+                            var p1 = v.Point;
+                            var p2 = v.next.Point;
+                            Point p = new Point((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2);
+                            DrawRelationIcon(canvasGraphics, p, v.ParentRelation);
+                        }
 
-                        vertexRectangle.Location = v.point + locationAdjustment;
+
+                        vertexRectangle.Location = v.Point + locationAdjustment;
                         canvasGraphics.FillEllipse(v == selectedVertex ? selectedVertexBrush : Brushes.Black, 
                         vertexRectangle);
                     }
@@ -79,6 +91,8 @@ namespace GraphEditor
             RemoveVertexButton.Enabled = selectedVertex != null && currentPolygon.Count > 3;
         }
 
+
+
         private void BitMap_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && !inAddPolygonMode)
@@ -86,7 +100,7 @@ namespace GraphEditor
                 if (GetVertexAtPosition(e.Location) == null)
                 {
                     if (!Geometry.IsPointInsidePolygon(e.Location,
-                        currentPolygon.Select(v => v.point).ToList()))
+                        currentPolygon.Select(v => v.Point).ToList()))
                     {
                         AddNewPolygon(e.Location);
                         bitMap.Invalidate();
@@ -164,13 +178,13 @@ namespace GraphEditor
                     if (selectedEdgeVertex == null)
                     {
                         isPolygonSelected = !isPolygonSelected && Geometry.IsPointInsidePolygon(e.Location,
-                            currentPolygon.Select(v => v.point).ToList());
+                            currentPolygon.Select(v => v.Point).ToList());
                         if (!isPolygonSelected)
                         {
                             foreach (LinkedList<Vertex> polygon in polygons)
                             {
                                 if (Geometry.IsPointInsidePolygon(e.Location,
-                                    polygon.Select(v => v.point).ToList()))
+                                    polygon.Select(v => v.Point).ToList()))
                                 {
                                     currentPolygon = polygon;
                                     isPolygonSelected = true;
@@ -184,7 +198,6 @@ namespace GraphEditor
                     else bitMap.Invalidate();
                 }
                 else bitMap.Invalidate();
-
             }
         }
 
@@ -200,7 +213,7 @@ namespace GraphEditor
                     int maxYAdjustment = 0;
                     foreach (Vertex v in currentPolygon)
                     {
-                        var (xValue, yValue) = GetAdjustment(ref area, v.point);
+                        var (xValue, yValue) = GetAdjustment(ref area, v.Point);
                         if (Math.Abs(maxXAdjustment) < Math.Abs(xValue))
                             maxXAdjustment = xValue;
                         if (Math.Abs(maxYAdjustment) < Math.Abs(yValue))
@@ -211,7 +224,7 @@ namespace GraphEditor
                     {
                         foreach (Vertex v in currentPolygon)
                         {
-                            v.point.Offset(maxXAdjustment, maxYAdjustment);
+                            v.Offset(maxXAdjustment, maxYAdjustment);
                         }
                     }
 
@@ -221,16 +234,16 @@ namespace GraphEditor
                 else if (selectedEdgeVertex != null)
                 {
                     var area = bitMap.ClientRectangle;
-                    var (xValue1, yValue1) = GetAdjustment(ref area, selectedEdgeVertex.point);
-                    var (xValue2, yValue2) = GetAdjustment(ref area, selectedEdgeVertex.next.point);
+                    var (xValue1, yValue1) = GetAdjustment(ref area, selectedEdgeVertex.Point);
+                    var (xValue2, yValue2) = GetAdjustment(ref area, selectedEdgeVertex.next.Point);
 
                     int maxXAdjustment = Math.Abs(xValue1) > Math.Abs(xValue2) ? xValue1 : xValue2;
                     int maxYAdjustment = Math.Abs(yValue1) > Math.Abs(yValue2) ? yValue1 : yValue2;
 
                     if (maxXAdjustment != 0 || maxYAdjustment != 0)
                     {
-                        selectedEdgeVertex.point.Offset(maxXAdjustment, maxYAdjustment);
-                        selectedEdgeVertex.next.point.Offset(maxXAdjustment, maxYAdjustment);
+                        selectedEdgeVertex.Offset(maxXAdjustment, maxYAdjustment);
+                        selectedEdgeVertex.next.Offset(maxXAdjustment, maxYAdjustment);
                     }
 
                     selectedEdgeVertex = null;
@@ -239,8 +252,8 @@ namespace GraphEditor
                 else if (selectedVertex != null)
                 {
                     var area = bitMap.ClientRectangle;
-                    var (xValue, yValue) = GetAdjustment(ref area, selectedVertex.point);
-                    selectedVertex.point.Offset(xValue, yValue);
+                    var (xValue, yValue) = GetAdjustment(ref area, selectedVertex.Point);
+                    selectedVertex.Offset(xValue, yValue);
                     bitMap.Invalidate();
                 }
             }
@@ -256,7 +269,7 @@ namespace GraphEditor
             {
                 if (selectedVertex != null && Control.MouseButtons == MouseButtons.Right)
                 {
-                    selectedVertex.point += (Size)e.Location - previousMouseDownLocation;
+                    selectedVertex.Point += (Size)e.Location - previousMouseDownLocation;
                     previousMouseDownLocation = (Size)e.Location;
                     bitMap.Invalidate();
 
@@ -265,8 +278,8 @@ namespace GraphEditor
                 {
                     var adjustment = (Size)e.Location - previousMouseDownLocation;
                     previousMouseDownLocation = (Size)e.Location;
-                    selectedEdgeVertex.point += adjustment;
-                    selectedEdgeVertex.next.point += adjustment;
+                    selectedEdgeVertex.Point += adjustment;
+                    selectedEdgeVertex.next.Point += adjustment;
                     bitMap.Invalidate();
                 }
                 else if (isPolygonSelected)
@@ -275,7 +288,7 @@ namespace GraphEditor
                     previousMouseDownLocation = (Size)e.Location;
                     foreach (Vertex v in currentPolygon)
                     {
-                        v.point += adjustment;
+                        v.Point += adjustment;
                     }
                     bitMap.Invalidate();
                 }
@@ -357,6 +370,39 @@ namespace GraphEditor
             }
 
             return true;
+        }
+
+        private void equalityPictureBox_Click(object sender, EventArgs e)
+        {
+            ChooseRelation(typeof(EqualLengthRelation));
+        }
+
+        private void perpendicularityPictureBox_Click(object sender, EventArgs e)
+        {
+            ChooseRelation(typeof(PerpendicularityRelation));
+        }
+
+        private void ChooseRelation(Type type)
+        {
+            var chooseColor = SystemColors.GradientActiveCaption;
+            if(type == typeof(EqualLengthRelation))
+            {
+                equalityPictureBox.BackColor = chooseColor;
+                perpendicularityPictureBox.BackColor = SystemColors.ButtonHighlight;
+                if (!chooseRelationEdgeLabel.Visible)
+                {
+                    chooseRelationEdgeLabel.Visible = true;
+                }
+            }
+            else
+            {
+                perpendicularityPictureBox.BackColor = chooseColor;
+                equalityPictureBox.BackColor = SystemColors.ButtonHighlight;
+                if (!chooseRelationEdgeLabel.Visible)
+                {
+                    chooseRelationEdgeLabel.Visible = true;
+                }
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GraphEditor.Relations;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace GraphEditor
     public partial class Form1 : Form
     {
         private const double eps = 0.5;
+        private const int relationIconSize = 12;
 
         private static readonly Size locationAdjustment = new Size(-Vertex.radius / 2, -Vertex.radius / 2);
         private Size previousMouseDownLocation;
@@ -17,6 +19,7 @@ namespace GraphEditor
         private Vertex selectedVertex;
         private readonly Brush selectedVertexBrush = Brushes.Red;
         private Vertex selectedEdgeVertex;
+        private readonly Brush selectedEdgeBrush = Brushes.DarkBlue;
         private bool isPolygonSelected;
 
         private readonly List<LinkedList<Vertex>> polygons;
@@ -27,12 +30,26 @@ namespace GraphEditor
 
         private void DrawNormalPolygon(Graphics canvasGraphics, LinkedList<Vertex> polygon)
         {
-            canvasGraphics.FillPolygon(Brushes.White, polygon.Select(v => v.point).ToArray());
+            canvasGraphics.FillPolygon(Brushes.White, polygon.Select(v => v.Point).ToArray());
             foreach (var v in polygon)
             {
-                canvas.DrawLine(v.point, v.next.point, Color.Black);
-                vertexRectangle.Location = v.point + locationAdjustment;
+                canvas.DrawLine(v, v.next, Color.Black);
+                vertexRectangle.Location = v.Point + locationAdjustment;
                 canvasGraphics.FillEllipse(Brushes.Black, vertexRectangle);
+            }
+        }
+
+        private void DrawRelationIcon(Graphics graphics, Point p, Relation r)
+        {
+
+            Rectangle rect = new Rectangle(p.X - relationIconSize / 2, p.Y - relationIconSize / 2, relationIconSize, relationIconSize);
+            if (r.GetType() == typeof(EqualLengthRelation))
+            {
+                graphics.DrawIcon(Properties.Resources.Equality481, rect);
+            }
+            else
+            {
+                graphics.DrawIcon(Properties.Resources.Perpendicularity481, rect);
             }
         }
 
@@ -79,10 +96,10 @@ namespace GraphEditor
             double minDist = double.PositiveInfinity;
             foreach (Vertex v in currentPolygon)
             {
-                if (Geometry.AreVerticesIntersecting(v.point, position, Vertex.radius) ||
-                    v.point.Equals(position))
+                if (Geometry.AreVerticesIntersecting(v.Point, position, Vertex.radius) ||
+                    v.Point.Equals(position))
                 {
-                    double currDist = Geometry.Distance(v.point, position);
+                    double currDist = Geometry.Distance(v.Point, position);
                     if (minDist > currDist)
                     {
                         minDist = currDist;
@@ -99,9 +116,9 @@ namespace GraphEditor
             for (var currentNode = currentPolygon.First; currentNode != null; currentNode = currentNode.Next)
             {
                 var vertex = currentNode.Value;
-                double d1 = Geometry.Distance(vertex.point, position);
-                double d2 = Geometry.Distance(position, vertex.next.point);
-                double d = Geometry.Distance(vertex.point, vertex.next.point);
+                double d1 = Geometry.Distance(vertex.Point, position);
+                double d2 = Geometry.Distance(position, vertex.next.Point);
+                double d = Geometry.Distance(vertex.Point, vertex.next.Point);
 
                 if (Math.Abs(d1 + d2 - d) < eps)
                     return (currentNode);

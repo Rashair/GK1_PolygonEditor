@@ -16,6 +16,13 @@ namespace GraphEditor
             return Math.Sqrt((p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y));
         }
 
+        public static double Angle(Point p1, Point p2)
+        {
+            float xDiff = p2.X - p1.X;
+            float yDiff = p2.Y - p1.Y;
+            return Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI;
+        }
+
 
         // https://stackoverflow.com/a/14998816/6841224
         // The function counts the number of sides of the polygon that:
