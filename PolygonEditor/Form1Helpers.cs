@@ -8,6 +8,23 @@ namespace GraphEditor
 {
     public partial class Form1 : Form
     {
+        private const double eps = 0.5;
+
+        private static readonly Size locationAdjustment = new Size(-Vertex.radius / 2, -Vertex.radius / 2);
+        private Size previousMouseDownLocation;
+        private Rectangle vertexRectangle;
+
+        private Vertex selectedVertex;
+        private readonly Brush selectedVertexBrush = Brushes.Red;
+        private Vertex selectedEdgeVertex;
+        private bool isPolygonSelected;
+
+        private readonly List<LinkedList<Vertex>> polygons;
+        private bool inAddPolygonMode;
+        private LinkedList<Vertex> currentPolygon;
+
+        private bool mouseDownAndUpDetached;
+
         private void DrawNormalPolygon(Graphics canvasGraphics, LinkedList<Vertex> polygon)
         {
             canvasGraphics.FillPolygon(Brushes.White, polygon.Select(v => v.point).ToArray());
@@ -34,6 +51,7 @@ namespace GraphEditor
         {
             inAddPolygonMode = true;
             ClearAllSelection();
+            generatePolygonButton.Enabled = false;
 
             bitMap.MouseDown -= BitMap_MouseDown;
             bitMap.MouseUp -= BitMap_MouseUp;
@@ -49,8 +67,10 @@ namespace GraphEditor
         private void TurnOffAddPolygonMode()
         {
             inAddPolygonMode = false;
+            generatePolygonButton.Enabled = true;
             bitMap.MouseDown += BitMap_MouseDown;
             bitMap.MouseUp += BitMap_MouseUp;
+            mouseDownAndUpDetached = false;
         }
 
         private Vertex GetVertexAtPosition(Point position)
@@ -119,21 +139,30 @@ namespace GraphEditor
             ClearAllSelection();
             polygons.Remove(currentPolygon);
             GetNewCurrentPolygon();
-            if (currentPolygon != null)
+            if (inAddPolygonMode)
+            {
                 TurnOffAddPolygonMode();
+            }
         }
 
         private void GetNewCurrentPolygon()
         {
             if (polygons.Count > 0)
             {
-                currentPolygon = polygons.First();
+                currentPolygon = polygons.Last();
+                if (mouseDownAndUpDetached)
+                {
+                    bitMap.MouseDown += BitMap_MouseDown;
+                    bitMap.MouseUp += BitMap_MouseUp;
+                    mouseDownAndUpDetached = false;
+                }
             }
             else
             {
                 currentPolygon = null;
                 bitMap.MouseDown -= BitMap_MouseDown;
                 bitMap.MouseUp -= BitMap_MouseUp;
+                mouseDownAndUpDetached = true;
             }
         }
     }

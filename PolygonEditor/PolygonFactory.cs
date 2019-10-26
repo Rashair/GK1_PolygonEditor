@@ -9,15 +9,14 @@ namespace GraphEditor
 {
     static class PolygonFactory
     {
-        public const int defaultSideLength = 200;
-
-        public static List<Vertex> GetRegularPolygon(Point centre, int numOfPoints, int radius = defaultSideLength / 2)
+        public static List<Vertex> GetRegularPolygon(Point centre, int numOfPoints, int sideLength = 150)
         {
             if (numOfPoints < 3)
             {
                 throw new ArgumentException("Number of points can't be fewer than 3");
             }
 
+            double radius = sideLength / (2 * Math.Sin(Math.PI / numOfPoints));
             var result = new List<Vertex>(numOfPoints);
             double angle = (2 * Math.PI) / numOfPoints;
             for (int i = 0; i < numOfPoints; i++)
@@ -36,22 +35,6 @@ namespace GraphEditor
             }
 
             return result;
-        }
-
-
-        public static List<Vertex> GetTriangle(Point centerPosition)
-        {
-            return GetRegularPolygon(centerPosition,  3);
-        }
-
-        public static List<Vertex> GetRectangle(Point centerPosition)
-        {
-            return GetRegularPolygon(centerPosition, 4);
-        }
-
-        public static List<Vertex> GetPentagon(Point centerPosition)
-        {
-            return GetRegularPolygon(centerPosition, 5);
         }
     }
 }

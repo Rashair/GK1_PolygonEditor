@@ -2,26 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Windows.Forms;
 
 namespace GraphEditor
 {
     public partial class Form1 : Form
     {
-        private const double eps = 0.5;
-
-        private static readonly Size locationAdjustment = new Size(-Vertex.radius / 2, -Vertex.radius / 2);
-        private Size previousMouseDownLocation;
-        private Rectangle vertexRectangle;
-
-        private Vertex selectedVertex;
-        private readonly Brush selectedVertexBrush = Brushes.Red;
-        private Vertex selectedEdgeVertex;
-        private bool isPolygonSelected;
-
-        private readonly List<LinkedList<Vertex>> polygons;
-        private bool inAddPolygonMode;
-        private LinkedList<Vertex> currentPolygon;
         private readonly Bitmap canvas;
 
         public Form1()
@@ -29,11 +16,13 @@ namespace GraphEditor
             InitializeComponent();
 
             canvas = new Bitmap(1920, 1024);
+            Point center = new Point(bitMap.Size.Width / 2, bitMap.Size.Height / 2);
             vertexRectangle = new Rectangle() { Size = new Size(Vertex.radius, Vertex.radius) };
-            var bitmapSize = bitMap.Size;
-            currentPolygon = new LinkedList<Vertex>(PolygonFactory.GetRectangle(
-                new Point(bitmapSize.Width / 2, bitmapSize.Height / 2)));
+            currentPolygon = new LinkedList<Vertex>(PolygonFactory.GetRegularPolygon(center, 4));
             polygons = new List<LinkedList<Vertex>> { currentPolygon };
+
+            centreXTextBox.Text = center.X.ToString();
+            centreYTextBox.Text = center.Y.ToString();
         }
 
         private void BitMap_Paint(object sender, PaintEventArgs e)
@@ -134,6 +123,9 @@ namespace GraphEditor
         {
             if (e.Button == MouseButtons.Left)
             {
+                centreXTextBox.Text = e.X.ToString();
+                centreYTextBox.Text = e.Y.ToString();
+
                 if (currentPolygon == null)
                 {
                     AddNewPolygon(e.Location);
@@ -292,8 +284,18 @@ namespace GraphEditor
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Delete && selectedVertex != null)
-                RemoveVertex();
+            if (e.KeyCode == Keys.Delete)
+            {
+                
+                if (selectedVertex != null)
+                {
+                    RemoveVertexButton_Click(null, null);
+                }
+                else
+                {
+                    DeletePolygonButton_Click(null, null);
+                }
+            }
         }
 
         // Right section
@@ -307,6 +309,54 @@ namespace GraphEditor
         {
             DeletePolygon();
             bitMap.Invalidate();
+        }
+
+        private void GeneratePolygonButton_Click(object sender, EventArgs e)
+        {
+            if (!TryParseAllParameters(out Point centre, out int numOfPoints, out int sideLength))
+            {
+                MessageBox.Show("Błąd", "Niewłaściwa wartość", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            polygons.Add(new LinkedList<Vertex> ( PolygonFactory.GetRegularPolygon(centre, numOfPoints, sideLength)));
+            ClearAllSelection();
+            GetNewCurrentPolygon();
+            if (inAddPolygonMode)
+            {
+                TurnOffAddPolygonMode();
+            }
+            bitMap.Invalidate();
+        }
+
+        private bool TryParseAllParameters(out Point centre, out int numberOfPoints, out int sideLength)
+        {
+            centre = new Point();
+            numberOfPoints = 0;
+            sideLength = 0;
+
+            if(!int.TryParse(centreXTextBox.Text, out int x))
+            {
+                return false;
+            }
+            if (!int.TryParse(centreYTextBox.Text, out int y))
+            {
+                return false;
+            }
+            centre.X = x;
+            centre.Y = y;
+
+            if (!int.TryParse(verticesNumberTextBox.Text, out numberOfPoints))
+            {
+                return false;
+            }
+
+            if (!int.TryParse(sideLengthTextBox.Text, out sideLength))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
