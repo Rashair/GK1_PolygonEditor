@@ -32,7 +32,7 @@ namespace GraphEditor
             vertexRectangle = new Rectangle() { Size = new Size(Vertex.radius, Vertex.radius) };
             var bitmapSize = bitMap.Size;
             currentPolygon = new LinkedList<Vertex>(PolygonFactory.GetRectangle(
-                new Point(bitmapSize.Width / 3, bitmapSize.Height / 3)));
+                new Point(bitmapSize.Width / 2, bitmapSize.Height / 2)));
             polygons = new List<LinkedList<Vertex>> { currentPolygon };
         }
 

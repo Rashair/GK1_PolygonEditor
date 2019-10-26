@@ -11,35 +11,47 @@ namespace GraphEditor
     {
         public const int defaultSideLength = 200;
 
-        public static List<Vertex> GetTriangle(Point leftVertexPosition)
+        public static List<Vertex> GetRegularPolygon(Point centre, int numOfPoints, int radius = defaultSideLength / 2)
         {
-            var v1 = new Vertex(leftVertexPosition);
-            var v2 = new Vertex(leftVertexPosition.X + defaultSideLength, leftVertexPosition.Y);
-            int height = (int)Math.Round((defaultSideLength * Math.Sqrt(3) / 2.0));
-            var v3 = new Vertex(leftVertexPosition.X + defaultSideLength / 2,
-                leftVertexPosition.Y + height);
+            if (numOfPoints < 3)
+            {
+                throw new ArgumentException("Number of points can't be fewer than 3");
+            }
 
-            v1.SetPrevAndNext(v3, v2);
-            v2.SetPrevAndNext(v1, v3);
-            v3.SetPrevAndNext(v2, v1);
+            var result = new List<Vertex>(numOfPoints);
+            double angle = (2 * Math.PI) / numOfPoints;
+            for (int i = 0; i < numOfPoints; i++)
+            {
+                int x = (int)Math.Round(centre.X + radius * Math.Sin(i * angle));
+                int y = (int)Math.Round(centre.Y + radius * Math.Cos(i * angle));
+                result.Add(new Vertex(x, y));
+            }
 
-            return new List<Vertex> { v1, v2, v3 };
+            int lastInd = result.Count - 1;
+            result[0].SetPrevAndNext(result[lastInd], result[1]);
+            result[lastInd].SetPrevAndNext(result[lastInd - 2], result[0]);
+            for (int i = 1; i < lastInd; ++i)
+            {
+                result[i].SetPrevAndNext(result[i - 1], result[i + 1]);
+            }
+
+            return result;
         }
 
-        public static List<Vertex> GetRectangle(Point leftVertexPosition)
+
+        public static List<Vertex> GetTriangle(Point centerPosition)
         {
-            var v1 = new Vertex(leftVertexPosition);
-            var v2 = new Vertex(leftVertexPosition.X + defaultSideLength, leftVertexPosition.Y);
-            var v3 = new Vertex(leftVertexPosition.X + defaultSideLength, leftVertexPosition.Y + defaultSideLength);
-            var v4 = new Vertex(leftVertexPosition.X, leftVertexPosition.Y + defaultSideLength);
-
-            v1.SetPrevAndNext(v4, v2);
-            v2.SetPrevAndNext(v1, v3);
-            v3.SetPrevAndNext(v2, v4);
-            v4.SetPrevAndNext(v3, v1);
-
-            return new List<Vertex> { v1, v2, v3, v4 };
+            return GetRegularPolygon(centerPosition,  3);
         }
 
+        public static List<Vertex> GetRectangle(Point centerPosition)
+        {
+            return GetRegularPolygon(centerPosition, 4);
+        }
+
+        public static List<Vertex> GetPentagon(Point centerPosition)
+        {
+            return GetRegularPolygon(centerPosition, 5);
+        }
     }
 }
