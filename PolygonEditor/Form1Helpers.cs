@@ -361,6 +361,7 @@ namespace GraphEditor
 
         private void RelationBoxHide()
         {
+            selectedRelationEdgeVertex = null;
             RelationGroupBox.Visible = false;
             OnChangingToEmptyRelation();
             RelationGroupBox.Invalidate();

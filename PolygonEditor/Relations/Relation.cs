@@ -12,19 +12,14 @@ namespace GraphEditor
 
         protected Vertex v1;
         protected Vertex v2;
-        protected double angle1;
 
         protected Vertex v3;
         protected Vertex v4;
-        protected double angle2;
 
         public Relation(Vertex v1, Vertex v2, Vertex v3, Vertex v4)
         {
             (this.v1, this.v2) = (v1, v2);
-            this.angle1 = Geometry.Angle(v1.Point, v2.Point);
-
             (this.v3, this.v4) = (v3, v4);
-            this.angle2 = Geometry.Angle(v3.Point, v4.Point);
 
 
             v1.ParentRelation = this;

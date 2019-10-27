@@ -27,8 +27,8 @@ namespace GraphEditor
             var v2 = v1.next;
             var v3 = v2.next;
             var v4 = v3.next;
-            _ = new EqualLengthRelation(v1, v2, v3, v4);
-            _ = new PerpendicularityRelation(v2, v3, v4, v1);
+            //_ = new EqualLengthRelation(v1, v2, v3, v4);
+            //_ = new PerpendicularityRelation(v2, v3, v4, v1);
 
 
             centreXTextBox.Text = center.X.ToString();
@@ -131,7 +131,7 @@ namespace GraphEditor
                     }
                 }
             }
-            else if (e.Button == MouseButtons.Right && Control.ModifierKeys == Keys.Control)
+            else if (e.Button == MouseButtons.Right && Control.ModifierKeys == Keys.Control && currentPolygon != null)
             {
                 Vertex edgeVertex = GetEdgeVertex(e.Location, 2*eps)?.Value;
                 bool gotTwoDifferentEdges = selectedRelationEdgeVertex != null && edgeVertex != null && 

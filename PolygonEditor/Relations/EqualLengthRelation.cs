@@ -19,12 +19,12 @@ namespace GraphEditor.Relations
         {
             double oldLength = Geometry.Distance(v1, v2);
             double newLength = (oldLength + Geometry.Distance(v3, v4)) / 2;
-            if (newLength - oldLength < Double.Epsilon)
+            if (Math.Abs(newLength - oldLength) < Single.Epsilon)
             {
                 return;
             }
-            v2.Point = Geometry.GetNewPointFromAngleAndDistance(v1, angle1, newLength);
-            v4.Point = Geometry.GetNewPointFromAngleAndDistance(v3, angle2, newLength);
+            v2.Point = Geometry.GetNewPointFromDistanceTowardsSecondPoint(v1, newLength, v2);
+            v4.Point = Geometry.GetNewPointFromDistanceTowardsSecondPoint(v3, newLength, v4);
         }
 
         public override void PreserveRelation(Vertex movedVertex)
@@ -33,8 +33,8 @@ namespace GraphEditor.Relations
             {
                 // TODO
             }
-
             var (w1, w2) = GetEdgeofVertex(movedVertex);
+
 
         }
 

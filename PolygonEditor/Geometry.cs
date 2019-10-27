@@ -23,11 +23,15 @@ namespace GraphEditor
             return Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI;
         }
 
-        public static Point GetNewPointFromAngleAndDistance(Point p1, double angle, double distance)
+        // https://math.stackexchange.com/questions/175896/finding-a-point-along-a-line-https://stackoverflow.com/questions/13302396/given-two-points-find-a-third-point-on-the-line?rq=1a-certain-distance-away-from-another-point/175906
+        public static Point GetNewPointFromDistanceTowardsSecondPoint(Point p1, double dT, Point p2)
         {
-            int x = (int)(p1.X + distance*Math.Cos(angle));    // unchanged
-            int y = (int)(p1.Y + distance* Math.Sin(angle));   // minus on the Sin
-            return new Point(x, y);
+            double d = Distance(p1, p2);
+            double t = dT / d;
+            return new Point(
+               (int)((1 - t) * p1.X + t * p2.X),
+               (int)((1 - t) * p1.Y + t * p2.Y)
+            );
         }
 
 
@@ -79,7 +83,7 @@ namespace GraphEditor
 
             for (int i = 0; i <= longerDim; ++i)
             {
-                if(A.X > 0 && A.Y > 0 && A.X < canvas.Width && A.Y < canvas.Height)
+                if (A.X > 0 && A.Y > 0 && A.X < canvas.Width && A.Y < canvas.Height)
                     canvas.SetPixel(A.X, A.Y, color);
 
                 numerator += shorterDim;
