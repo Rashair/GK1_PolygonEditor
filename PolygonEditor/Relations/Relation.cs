@@ -53,15 +53,15 @@ namespace GraphEditor
 
         public abstract void PreserveRelation(Vertex movedVertex);
 
-        protected (Vertex v1, Vertex v2) GetEdgeofVertex(Vertex v)
+        protected (Vertex w1, Vertex w2, Vertex w3, Vertex w4) GetMovedEdgeFirst(Vertex v)
         {
             if (v == v1 || v == v2)
             {
-                return (v1, v2);
+                return (v1, v2, v3, v4);
             }
             else
             {
-                return (v3, v4);
+                return (v3, v4, v1, v2);
             }
         }
 

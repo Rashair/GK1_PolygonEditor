@@ -36,7 +36,7 @@ namespace GraphEditor
             foreach (var v in polygon)
             {
                 canvas.DrawLine(v, v.next, Color.Black);
-                if (v.IsInRelation())
+                if (v.IsInParentRelation())
                 {
                     HandleDrawingRelationIcon(canvasGraphics, v);
                 }
@@ -51,7 +51,7 @@ namespace GraphEditor
             foreach (Vertex v in currentPolygon)
             {
                 canvas.DrawLine(v.Point, v.next.Point, GetEdgeColor(v));
-                if (v.IsInRelation())
+                if (v.IsInParentRelation())
                 {
                     HandleDrawingRelationIcon(canvasGraphics, v);
                 }
@@ -234,7 +234,7 @@ namespace GraphEditor
                 double d2 = Geometry.Distance(position, vertex.next.Point);
                 double d = Geometry.Distance(vertex.Point, vertex.next.Point);
 
-                if (Math.Abs(d1 + d2 - d) < eps)
+                if (Math.Abs(d1 + d2 - d) < edgeEps)
                     return (currentNode);
             }
 
@@ -260,7 +260,7 @@ namespace GraphEditor
             {
                 var v1 = firstEdgeVertex.Value;
                 var v2 = v1.next;
-                if (v1.IsInRelation())
+                if (v1.IsInParentRelation())
                 {
                     v1.InvokeOnRemoveRelation();
                 }
@@ -279,11 +279,11 @@ namespace GraphEditor
             if (currentPolygon.Count > 3)
             {
                 currentPolygon.Remove(selectedVertex);
-                if (selectedVertex.IsInRelation())
+                if (selectedVertex.IsInParentRelation())
                 {
                     selectedVertex.InvokeOnRemoveRelation();
                 }
-                if (selectedVertex.prev.IsInRelation())
+                if (selectedVertex.prev.IsInParentRelation())
                 {
                     selectedVertex.prev.InvokeOnRemoveRelation();
                 }
@@ -313,7 +313,6 @@ namespace GraphEditor
             {
                 equalityPictureBox.BackColor = chooseColor;
                 perpendicularityPictureBox.BackColor = SystemColors.ButtonHighlight;
-                
             }
             else
             {
@@ -322,7 +321,7 @@ namespace GraphEditor
             }
 
             selectedRelationType = chosenRelationType;
-            if (selectedRelationEdgeVertex.IsInRelation())
+            if (selectedRelationEdgeVertex.IsInParentRelation())
             {
                 deleteRelationButton.Enabled = true;
                 if (selectedRelationEdgeVertex.ParentRelation.GetType() != selectedRelationType)

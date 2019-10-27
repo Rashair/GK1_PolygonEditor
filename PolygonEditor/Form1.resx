@@ -153,6 +153,213 @@
   <data name="&gt;&gt;bitMap.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="&gt;&gt;tab1.Name" xml:space="preserve">
+    <value>tab1</value>
+  </data>
+  <data name="&gt;&gt;tab1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tab1.Parent" xml:space="preserve">
+    <value>menuControl</value>
+  </data>
+  <data name="&gt;&gt;tab1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tab2.Name" xml:space="preserve">
+    <value>tab2</value>
+  </data>
+  <data name="&gt;&gt;tab2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tab2.Parent" xml:space="preserve">
+    <value>menuControl</value>
+  </data>
+  <data name="&gt;&gt;tab2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="menuControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="menuControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>771, 3</value>
+  </data>
+  <data name="menuControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 646</value>
+  </data>
+  <data name="menuControl.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;menuControl.Name" xml:space="preserve">
+    <value>menuControl</value>
+  </data>
+  <data name="&gt;&gt;menuControl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuControl.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;menuControl.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>918, 652</value>
+  </data>
+  <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="bitMap" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="menuControl" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,150" /&gt;&lt;Rows Styles="Percent,100,Absolute,652" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="&gt;&gt;RelationGroupBox.Name" xml:space="preserve">
+    <value>RelationGroupBox</value>
+  </data>
+  <data name="&gt;&gt;RelationGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RelationGroupBox.Parent" xml:space="preserve">
+    <value>tab1</value>
+  </data>
+  <data name="&gt;&gt;RelationGroupBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;deleteGroupBox.Name" xml:space="preserve">
+    <value>deleteGroupBox</value>
+  </data>
+  <data name="&gt;&gt;deleteGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;deleteGroupBox.Parent" xml:space="preserve">
+    <value>tab1</value>
+  </data>
+  <data name="&gt;&gt;deleteGroupBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tab1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tab1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="tab1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 620</value>
+  </data>
+  <data name="tab1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tab1.Text" xml:space="preserve">
+    <value>Edycja</value>
+  </data>
+  <data name="&gt;&gt;tab1.Name" xml:space="preserve">
+    <value>tab1</value>
+  </data>
+  <data name="&gt;&gt;tab1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tab1.Parent" xml:space="preserve">
+    <value>menuControl</value>
+  </data>
+  <data name="&gt;&gt;tab1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;perpendicularityPictureBox.Name" xml:space="preserve">
+    <value>perpendicularityPictureBox</value>
+  </data>
+  <data name="&gt;&gt;perpendicularityPictureBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;perpendicularityPictureBox.Parent" xml:space="preserve">
+    <value>RelationGroupBox</value>
+  </data>
+  <data name="&gt;&gt;perpendicularityPictureBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;equalityPictureBox.Name" xml:space="preserve">
+    <value>equalityPictureBox</value>
+  </data>
+  <data name="&gt;&gt;equalityPictureBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;equalityPictureBox.Parent" xml:space="preserve">
+    <value>RelationGroupBox</value>
+  </data>
+  <data name="&gt;&gt;equalityPictureBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;chooseRelationEdgeLabel.Name" xml:space="preserve">
+    <value>chooseRelationEdgeLabel</value>
+  </data>
+  <data name="&gt;&gt;chooseRelationEdgeLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chooseRelationEdgeLabel.Parent" xml:space="preserve">
+    <value>RelationGroupBox</value>
+  </data>
+  <data name="&gt;&gt;chooseRelationEdgeLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;deleteRelationButton.Name" xml:space="preserve">
+    <value>deleteRelationButton</value>
+  </data>
+  <data name="&gt;&gt;deleteRelationButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;deleteRelationButton.Parent" xml:space="preserve">
+    <value>RelationGroupBox</value>
+  </data>
+  <data name="&gt;&gt;deleteRelationButton.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="RelationGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 119</value>
+  </data>
+  <data name="RelationGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 182</value>
+  </data>
+  <data name="RelationGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="RelationGroupBox.Text" xml:space="preserve">
+    <value>Relacje</value>
+  </data>
+  <data name="RelationGroupBox.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;RelationGroupBox.Name" xml:space="preserve">
+    <value>RelationGroupBox</value>
+  </data>
+  <data name="&gt;&gt;RelationGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RelationGroupBox.Parent" xml:space="preserve">
+    <value>tab1</value>
+  </data>
+  <data name="&gt;&gt;RelationGroupBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="perpendicularityPictureBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -276,32 +483,56 @@
   <data name="&gt;&gt;deleteRelationButton.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="RelationGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 119</value>
+  <data name="&gt;&gt;DeleteVertexButton.Name" xml:space="preserve">
+    <value>DeleteVertexButton</value>
   </data>
-  <data name="RelationGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 182</value>
+  <data name="&gt;&gt;DeleteVertexButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="RelationGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+  <data name="&gt;&gt;DeleteVertexButton.Parent" xml:space="preserve">
+    <value>deleteGroupBox</value>
   </data>
-  <data name="RelationGroupBox.Text" xml:space="preserve">
-    <value>Relacje</value>
+  <data name="&gt;&gt;DeleteVertexButton.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="RelationGroupBox.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="&gt;&gt;DeletePolygonButton.Name" xml:space="preserve">
+    <value>DeletePolygonButton</value>
   </data>
-  <data name="&gt;&gt;RelationGroupBox.Name" xml:space="preserve">
-    <value>RelationGroupBox</value>
+  <data name="&gt;&gt;DeletePolygonButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;RelationGroupBox.Type" xml:space="preserve">
+  <data name="&gt;&gt;DeletePolygonButton.Parent" xml:space="preserve">
+    <value>deleteGroupBox</value>
+  </data>
+  <data name="&gt;&gt;DeletePolygonButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="deleteGroupBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="deleteGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="deleteGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 99</value>
+  </data>
+  <data name="deleteGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="deleteGroupBox.Text" xml:space="preserve">
+    <value>Usuwanie</value>
+  </data>
+  <data name="&gt;&gt;deleteGroupBox.Name" xml:space="preserve">
+    <value>deleteGroupBox</value>
+  </data>
+  <data name="&gt;&gt;deleteGroupBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;RelationGroupBox.Parent" xml:space="preserve">
+  <data name="&gt;&gt;deleteGroupBox.Parent" xml:space="preserve">
     <value>tab1</value>
   </data>
-  <data name="&gt;&gt;RelationGroupBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;deleteGroupBox.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="DeleteVertexButton.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
@@ -372,58 +603,166 @@
   <data name="&gt;&gt;DeletePolygonButton.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="deleteGroupBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
+  <data name="&gt;&gt;newPolygonGroupBox.Name" xml:space="preserve">
+    <value>newPolygonGroupBox</value>
   </data>
-  <data name="deleteGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="deleteGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 99</value>
-  </data>
-  <data name="deleteGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="deleteGroupBox.Text" xml:space="preserve">
-    <value>Usuwanie</value>
-  </data>
-  <data name="&gt;&gt;deleteGroupBox.Name" xml:space="preserve">
-    <value>deleteGroupBox</value>
-  </data>
-  <data name="&gt;&gt;deleteGroupBox.Type" xml:space="preserve">
+  <data name="&gt;&gt;newPolygonGroupBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;deleteGroupBox.Parent" xml:space="preserve">
-    <value>tab1</value>
+  <data name="&gt;&gt;newPolygonGroupBox.Parent" xml:space="preserve">
+    <value>tab2</value>
   </data>
-  <data name="&gt;&gt;deleteGroupBox.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tab1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="tab1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tab1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 620</value>
-  </data>
-  <data name="tab1.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;newPolygonGroupBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tab1.Text" xml:space="preserve">
-    <value>Edycja</value>
+  <data name="tab2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
   </data>
-  <data name="&gt;&gt;tab1.Name" xml:space="preserve">
-    <value>tab1</value>
+  <data name="tab2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
   </data>
-  <data name="&gt;&gt;tab1.Type" xml:space="preserve">
+  <data name="tab2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 620</value>
+  </data>
+  <data name="tab2.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tab2.Text" xml:space="preserve">
+    <value>Nowy wielokąt</value>
+  </data>
+  <data name="&gt;&gt;tab2.Name" xml:space="preserve">
+    <value>tab2</value>
+  </data>
+  <data name="&gt;&gt;tab2.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tab1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tab2.Parent" xml:space="preserve">
     <value>menuControl</value>
   </data>
-  <data name="&gt;&gt;tab1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tab2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;generatePolygonButton.Name" xml:space="preserve">
+    <value>generatePolygonButton</value>
+  </data>
+  <data name="&gt;&gt;generatePolygonButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;generatePolygonButton.Parent" xml:space="preserve">
+    <value>newPolygonGroupBox</value>
+  </data>
+  <data name="&gt;&gt;generatePolygonButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>newPolygonGroupBox</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;sideLengthTextBox.Name" xml:space="preserve">
+    <value>sideLengthTextBox</value>
+  </data>
+  <data name="&gt;&gt;sideLengthTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;sideLengthTextBox.Parent" xml:space="preserve">
+    <value>newPolygonGroupBox</value>
+  </data>
+  <data name="&gt;&gt;sideLengthTextBox.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>newPolygonGroupBox</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;verticesNumberTextBox.Name" xml:space="preserve">
+    <value>verticesNumberTextBox</value>
+  </data>
+  <data name="&gt;&gt;verticesNumberTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;verticesNumberTextBox.Parent" xml:space="preserve">
+    <value>newPolygonGroupBox</value>
+  </data>
+  <data name="&gt;&gt;verticesNumberTextBox.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>newPolygonGroupBox</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;centreYTextBox.Name" xml:space="preserve">
+    <value>centreYTextBox</value>
+  </data>
+  <data name="&gt;&gt;centreYTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;centreYTextBox.Parent" xml:space="preserve">
+    <value>newPolygonGroupBox</value>
+  </data>
+  <data name="&gt;&gt;centreYTextBox.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;centreXTextBox.Name" xml:space="preserve">
+    <value>centreXTextBox</value>
+  </data>
+  <data name="&gt;&gt;centreXTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;centreXTextBox.Parent" xml:space="preserve">
+    <value>newPolygonGroupBox</value>
+  </data>
+  <data name="&gt;&gt;centreXTextBox.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="newPolygonGroupBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="newPolygonGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="newPolygonGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 614</value>
+  </data>
+  <data name="newPolygonGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="newPolygonGroupBox.Text" xml:space="preserve">
+    <value>Nowy wielokąt</value>
+  </data>
+  <data name="&gt;&gt;newPolygonGroupBox.Name" xml:space="preserve">
+    <value>newPolygonGroupBox</value>
+  </data>
+  <data name="&gt;&gt;newPolygonGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;newPolygonGroupBox.Parent" xml:space="preserve">
+    <value>tab2</value>
+  </data>
+  <data name="&gt;&gt;newPolygonGroupBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="generatePolygonButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -639,116 +978,29 @@
   <data name="&gt;&gt;centreXTextBox.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="newPolygonGroupBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="equalityToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
   </data>
-  <data name="newPolygonGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+  <data name="equalityToolStripMenuItem.Text" xml:space="preserve">
+    <value>Równa długość</value>
   </data>
-  <data name="newPolygonGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 614</value>
+  <data name="perpendicularityToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
   </data>
-  <data name="newPolygonGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+  <data name="perpendicularityToolStripMenuItem.Text" xml:space="preserve">
+    <value>Prostopadłość</value>
   </data>
-  <data name="newPolygonGroupBox.Text" xml:space="preserve">
-    <value>Nowy wielokąt</value>
+  <data name="contextMenuStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>181, 70</value>
   </data>
-  <data name="&gt;&gt;newPolygonGroupBox.Name" xml:space="preserve">
-    <value>newPolygonGroupBox</value>
+  <data name="&gt;&gt;contextMenuStrip1.Name" xml:space="preserve">
+    <value>contextMenuStrip1</value>
   </data>
-  <data name="&gt;&gt;newPolygonGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;newPolygonGroupBox.Parent" xml:space="preserve">
-    <value>tab2</value>
-  </data>
-  <data name="&gt;&gt;newPolygonGroupBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tab2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="tab2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="tab2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 620</value>
-  </data>
-  <data name="tab2.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tab2.Text" xml:space="preserve">
-    <value>Nowy wielokąt</value>
-  </data>
-  <data name="&gt;&gt;tab2.Name" xml:space="preserve">
-    <value>tab2</value>
-  </data>
-  <data name="&gt;&gt;tab2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tab2.Parent" xml:space="preserve">
-    <value>menuControl</value>
-  </data>
-  <data name="&gt;&gt;tab2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="menuControl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="menuControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>771, 3</value>
-  </data>
-  <data name="menuControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 646</value>
-  </data>
-  <data name="menuControl.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;menuControl.Name" xml:space="preserve">
-    <value>menuControl</value>
-  </data>
-  <data name="&gt;&gt;menuControl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuControl.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;menuControl.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="tableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>918, 652</value>
-  </data>
-  <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="bitMap" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="menuControl" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,150" /&gt;&lt;Rows Styles="Percent,100,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="&gt;&gt;contextMenuStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -773,6 +1025,18 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Edytor wielokątów</value>
+  </data>
+  <data name="&gt;&gt;equalityToolStripMenuItem.Name" xml:space="preserve">
+    <value>equalityToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;equalityToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;perpendicularityToolStripMenuItem.Name" xml:space="preserve">
+    <value>perpendicularityToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;perpendicularityToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Form1</value>

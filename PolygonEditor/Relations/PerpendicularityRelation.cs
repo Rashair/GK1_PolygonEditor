@@ -10,7 +10,7 @@ namespace GraphEditor.Relations
     {
         public PerpendicularityRelation(Vertex v1, Vertex v2, Vertex v3, Vertex v4) : base(v1, v2, v3, v4)
         {
-
+            ImposeRelation();
         }
 
         public override void ImposeRelation()

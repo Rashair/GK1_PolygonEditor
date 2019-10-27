@@ -74,9 +74,14 @@ namespace GraphEditor
 
         public void PreserveRelation()
         {
-            if (IsInRelation())
+            if (IsInParentRelation())
             {
                 parentRelation.PreserveRelation(this);
+            }
+
+            if(IsInChildRelation())
+            {
+                childRelation.PreserveRelation(this);                
             }
         }
 
@@ -88,15 +93,20 @@ namespace GraphEditor
 
         public void InvokeOnRemoveRelation()
         {
-            if (IsInRelation())
+            if (IsInParentRelation())
             {
                 this.parentRelation.OnRemoveRelation();
             }
         }
 
-        public bool IsInRelation()
+        public bool IsInParentRelation()
         {
             return this.parentRelation != null;
+        }
+
+        public bool IsInChildRelation()
+        {
+            return this.childRelation != null;
         }
 
         public int CompareTo(Vertex other)

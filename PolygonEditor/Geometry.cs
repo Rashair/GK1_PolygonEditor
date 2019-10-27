@@ -24,13 +24,11 @@ namespace GraphEditor
         }
 
         // https://math.stackexchange.com/questions/175896/finding-a-point-along-a-line-https://stackoverflow.com/questions/13302396/given-two-points-find-a-third-point-on-the-line?rq=1a-certain-distance-away-from-another-point/175906
-        public static Point GetNewPointFromDistanceTowardsSecondPoint(Point p1, double dT, Point p2)
+        public static Point GetNewPointTowardsSecondPoint(Point p1, double distanceRatio, Point p2)
         {
-            double d = Distance(p1, p2);
-            double t = dT / d;
             return new Point(
-               (int)((1 - t) * p1.X + t * p2.X),
-               (int)((1 - t) * p1.Y + t * p2.Y)
+               (int)((1 - distanceRatio) * p1.X + distanceRatio * p2.X),
+               (int)((1 - distanceRatio) * p1.Y + distanceRatio * p2.Y)
             );
         }
 

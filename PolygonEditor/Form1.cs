@@ -137,10 +137,9 @@ namespace GraphEditor
                 bool gotTwoDifferentEdges = selectedRelationEdgeVertex != null && edgeVertex != null && 
                     selectedRelationEdgeVertex != edgeVertex;
                 bool inChoosingEdgeMode = gotTwoDifferentEdges && chooseRelationEdgeLabel.Visible;
-                if (inChoosingEdgeMode && !edgeVertex.IsInRelation())
+                if (inChoosingEdgeMode && !edgeVertex.IsInParentRelation())
                 {
                     // Adding new relation
-
                     AddRelationForSelected(v1: selectedRelationEdgeVertex, v2: selectedRelationEdgeVertex.next,
                         v3: edgeVertex, v4: edgeVertex.next);
                     RelationBoxHide();
@@ -163,9 +162,13 @@ namespace GraphEditor
                     if (selectedRelationEdgeVertex != null)
                     {
                         RelationGroupBox.Visible = true;
-                        if (selectedRelationEdgeVertex.IsInRelation())
+                        if (selectedRelationEdgeVertex.IsInParentRelation())
                         {
                             ChooseRelation(selectedRelationEdgeVertex.ParentRelation.GetType());
+                        }
+                        else
+                        {
+                            contextMenuStrip1.Show(bitMap, e.Location);
                         }
 
                         RelationGroupBox.Invalidate();
@@ -285,8 +288,10 @@ namespace GraphEditor
                 {
                     selectedVertex.Point += (Size)e.Location - previousMouseDownLocation;
                     previousMouseDownLocation = (Size)e.Location;
-                    bitMap.Invalidate();
 
+                    selectedVertex.PreserveRelation();
+
+                    bitMap.Invalidate();
                 }
                 else if (selectedMoveEdgeVertex != null)
                 {
@@ -377,5 +382,14 @@ namespace GraphEditor
             bitMap.Invalidate();
         }
 
+        private void equalityToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChooseRelation(typeof(EqualLengthRelation));
+        }
+
+        private void perpendicularityToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChooseRelation(typeof(PerpendicularityRelation));
+        }
     }
 }

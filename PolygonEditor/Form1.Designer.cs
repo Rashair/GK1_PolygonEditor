@@ -30,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.bitMap = new System.Windows.Forms.PictureBox();
@@ -53,6 +54,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.centreYTextBox = new System.Windows.Forms.TextBox();
             this.centreXTextBox = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.equalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.perpendicularityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bitMap)).BeginInit();
             this.menuControl.SuspendLayout();
@@ -63,6 +67,7 @@
             this.deleteGroupBox.SuspendLayout();
             this.tab2.SuspendLayout();
             this.newPolygonGroupBox.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -235,6 +240,26 @@
             resources.ApplyResources(this.centreXTextBox, "centreXTextBox");
             this.centreXTextBox.Name = "centreXTextBox";
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.equalityToolStripMenuItem,
+            this.perpendicularityToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
+            // 
+            // equalityToolStripMenuItem
+            // 
+            this.equalityToolStripMenuItem.Name = "equalityToolStripMenuItem";
+            resources.ApplyResources(this.equalityToolStripMenuItem, "equalityToolStripMenuItem");
+            this.equalityToolStripMenuItem.Click += new System.EventHandler(this.equalityToolStripMenuItem_Click);
+            // 
+            // perpendicularityToolStripMenuItem
+            // 
+            this.perpendicularityToolStripMenuItem.Name = "perpendicularityToolStripMenuItem";
+            resources.ApplyResources(this.perpendicularityToolStripMenuItem, "perpendicularityToolStripMenuItem");
+            this.perpendicularityToolStripMenuItem.Click += new System.EventHandler(this.perpendicularityToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
@@ -255,6 +280,7 @@
             this.tab2.ResumeLayout(false);
             this.newPolygonGroupBox.ResumeLayout(false);
             this.newPolygonGroupBox.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -283,6 +309,9 @@
         private System.Windows.Forms.TextBox centreYTextBox;
         private System.Windows.Forms.TextBox centreXTextBox;
         private System.Windows.Forms.Button deleteRelationButton;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem equalityToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem perpendicularityToolStripMenuItem;
     }
 }
 
