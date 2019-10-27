@@ -58,7 +58,11 @@ namespace GraphEditor
 
                 vertexRectangle.Location = v.Point + locationAdjustment;
                 canvasGraphics.FillEllipse(v == selectedVertex ? Brushes.Red : Brushes.Black,
-                vertexRectangle);
+                    vertexRectangle);
+                if (v.IsInParentRelation())
+                    canvasGraphics.DrawString("P", this.Font, Brushes.OrangeRed, v.Point);
+                else if (v.IsInChildRelation())
+                    canvasGraphics.DrawString("X", this.Font, Brushes.OrangeRed, v.Point);
             }
         }
 
@@ -87,7 +91,7 @@ namespace GraphEditor
             {
                 graphics.DrawIcon(Properties.Resources.Perpendicularity481, rect);
             }
-            graphics.DrawString(v.ParentRelation.RelationNumber.ToString(), this.Font, Brushes.DarkBlue, 
+            graphics.DrawString(v.ParentRelation.RelationNumber.ToString(), this.Font, Brushes.DarkBlue,
                 rect.X + rect.Width, rect.Y + rect.Height);
         }
 
@@ -109,6 +113,20 @@ namespace GraphEditor
             currentPolygon = newPolygon;
 
             TurnOnAddPolygonMode();
+        }
+
+        private void ReverseIfNotClockwise()
+        {
+            var v1 = currentPolygon.First.Value;
+            var det = Geometry.CrossProduct(v1, v1.next);
+            if(det < 0)
+            {
+                currentPolygon.Reverse();
+                foreach(Vertex v in currentPolygon)
+                {
+                    (v.next, v.prev) = (v.prev, v.next);
+                }
+            }
         }
 
         private void TurnOnAddPolygonMode()
@@ -234,10 +252,11 @@ namespace GraphEditor
                 var vertex = currentNode.Value;
                 double d1 = Geometry.Distance(vertex.Point, position);
                 double d2 = Geometry.Distance(position, vertex.next.Point);
-                double d = Geometry.Distance(vertex.Point, vertex.next.Point);
-
+                double d = Geometry.Distance(vertex.Point, vertex.next.Point); 
                 if (Math.Abs(d1 + d2 - d) < edgeEps)
+                {
                     return (currentNode);
+                }
             }
 
             return (null);
@@ -329,20 +348,20 @@ namespace GraphEditor
 
         private void SwapRelationsForSelected()
         {
-            var (v1, v2, v3, v4) = selectedRelationEdgeVertex.ParentRelation.GetMembersOfRelation();
+            var (v1, _, v3, _) = selectedRelationEdgeVertex.ParentRelation.GetMembersOfRelation();
             selectedRelationEdgeVertex.InvokeOnRemoveRelation();
-            AddRelationForSelected(v1, v2, v3, v4);
+            AddRelationForSelected(v1, v3);
         }
 
-        private void AddRelationForSelected(Vertex v1, Vertex v2, Vertex v3, Vertex v4)
+        private void AddRelationForSelected(Vertex v1, Vertex v3)
         {
             if (selectedRelationType == typeof(EqualLengthRelation))
             {
-                _ = new EqualLengthRelation(v1, v2, v3, v4);
+                _ = new EqualLengthRelation(v1, v3);
             }
             else
             {
-                _ = new PerpendicularityRelation(v1, v2, v3, v4);
+                _ = new PerpendicularityRelation(v1, v3);
             }
         }
 

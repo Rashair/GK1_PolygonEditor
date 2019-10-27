@@ -71,7 +71,6 @@ namespace GraphEditor
         }
 
 
-
         private void BitMap_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left && !inAddPolygonMode)
@@ -126,6 +125,7 @@ namespace GraphEditor
                     {
                         vertex.prev = currentPolygon.Last.Value;
                         currentPolygon.Last.Value.next = vertex;
+                        ReverseIfNotClockwise();
                         TurnOffAddPolygonMode();
                         bitMap.Invalidate();
                     }
@@ -140,8 +140,7 @@ namespace GraphEditor
                 if (inChoosingEdgeMode && !edgeVertex.IsInParentRelation())
                 {
                     // Adding new relation
-                    AddRelationForSelected(v1: selectedRelationEdgeVertex, v2: selectedRelationEdgeVertex.next,
-                        v3: edgeVertex, v4: edgeVertex.next);
+                    AddRelationForSelected(v1: selectedRelationEdgeVertex, v3: edgeVertex);
                     RelationBoxHide();
                     RelationGroupBox.Invalidate();
                     bitMap.Invalidate();

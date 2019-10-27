@@ -5,10 +5,22 @@ namespace GraphEditor
 {
     static class Geometry
     {
+        public const double Eps = 1e-6;
+
         public static bool AreVerticesIntersecting(Point p1, Point p2, int radius)
         {
             return (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y)
                 <= radius * radius;
+        }
+
+        public static double Magnitude(this Point p)
+        {
+            return Math.Sqrt(p.X * p.X + p.Y * p.Y);
+        }
+
+        public static Point Difference(this Point p, Point d)
+        {
+            return new Point(p.X - d.X, p.Y - d.Y);
         }
 
         public static double Distance(Point p1, Point p2)
@@ -24,8 +36,52 @@ namespace GraphEditor
             return Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI;
         }
 
+        public static int CrossProduct(Point p1, Point p2)
+        {
+            return p1.X * p2.Y - p1.Y * p2.X;
+        }
+
+        public static int DotProduct(Point p1, Point p2)
+        {
+            return p1.X * p2.X + p1.Y * p2.Y;
+        }
+
+
+        public static double AngleBetweenVectors(Point w1, Point w2, Point v1, Point v2)
+        {
+            // Swap vectors if in wrong order
+            var det = CrossProduct(w2, v1);
+            if (det > 0)
+            {
+                (w1, w2) = (v1, v2);
+            }
+
+            // Shift second vector to have origin in end of first
+            int xDiff = v1.X - w2.X;
+            int yDiff = v1.Y - w2.Y;
+            v1.Offset(xDiff, yDiff);
+            v2.Offset(xDiff, yDiff);
+            // Now w2 = v1
+
+
+            // Algorithm
+            Point a = v1.Difference(w1);
+            Point b = v1.Difference(v2);
+
+            double angle = Math.Acos(DotProduct(a, b) / (a.Magnitude() * b.Magnitude())) * (180 / Math.PI);
+
+            /// ----
+            double theta1 = Math.Atan2(a.Y, a.X) * 180 / Math.PI;
+            double theta2 = Math.Atan2(b.Y, b.X) * 180 / Math.PI;
+            angle = (180 + theta1 - theta2 + 360);
+            while (angle > 360) angle -= 360;
+
+            return angle;
+        }
+
+
         // https://math.stackexchange.com/questions/175896/finding-a-point-along-a-line-https://stackoverflow.com/questions/13302396/given-two-points-find-a-third-point-on-the-line?rq=1a-certain-distance-away-from-another-point/175906
-        public static Point GetNewPointTowardsSecondPoint(Point p1, double distanceRatio, Point p2)
+        public static Point SameLinePoint(Point p1, double distanceRatio, Point p2)
         {
             return new Point(
                (int)((1 - distanceRatio) * p1.X + distanceRatio * p2.X),

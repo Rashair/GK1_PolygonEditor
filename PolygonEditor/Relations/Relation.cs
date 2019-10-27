@@ -19,17 +19,17 @@ namespace GraphEditor
         protected Vertex v3;
         protected Vertex v4;
 
-        public Relation(Vertex v1, Vertex v2, Vertex v3, Vertex v4)
+        public Relation(Vertex v1, Vertex v3)
         {
             RelationNumber = counter.Dequeue();
 
-            (this.v1, this.v2) = (v1, v2);
-            (this.v3, this.v4) = (v3, v4);
+            (this.v1, this.v2) = (v1, v1.next);
+            (this.v3, this.v4) = (v3, v3.next);
 
-            v1.ParentRelation = this;
-            v2.ChildRelation = this;
-            v3.ParentRelation = this;
-            v4.ChildRelation = this;
+            this.v1.ParentRelation = this;
+            this.v2.ChildRelation = this;
+            this.v3.ParentRelation = this;
+            this.v4.ChildRelation = this;
         }
 
         public bool BelongsToRelation(Vertex v)

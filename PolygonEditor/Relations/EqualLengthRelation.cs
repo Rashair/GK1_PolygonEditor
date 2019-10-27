@@ -8,9 +8,7 @@ namespace GraphEditor.Relations
 {
     class EqualLengthRelation : Relation
     {
-        public const double Eps = 1e-6;
-
-        public EqualLengthRelation(Vertex v1, Vertex v2, Vertex v3, Vertex v4) : base(v1, v2, v3, v4)
+        public EqualLengthRelation(Vertex v1, Vertex v3) : base(v1, v3)
         {
             
             ImposeRelation();
@@ -26,10 +24,10 @@ namespace GraphEditor.Relations
             var (len1, len2) = CalculateLenghts(v1, v2, v3, v4);
 
             double newLength = (len1 + len2) / 2;
-            if (Math.Abs(newLength - len1) >= Eps)
+            if (Math.Abs(newLength - len1) > Geometry.Eps)
             {
-                v2.Point = Geometry.GetNewPointTowardsSecondPoint(v1, distanceRatio: newLength / len1, v2);
-                v4.Point = Geometry.GetNewPointTowardsSecondPoint(v3, distanceRatio: newLength / len2, v4);
+                v2.Point = Geometry.SameLinePoint(v1, distanceRatio: newLength / len1, v2);
+                v4.Point = Geometry.SameLinePoint(v3, distanceRatio: newLength / len2, v4);
             }
         }
 
@@ -37,7 +35,7 @@ namespace GraphEditor.Relations
         {
             var (w1, w2, w3, w4) = GetMovedEdgeFirst(movedVertex);
             var (len1, len2) = CalculateLenghts(w1, w2, w3, w4);
-            w4.Point = Geometry.GetNewPointTowardsSecondPoint(w3, distanceRatio: len1 / len2, w4);
+            w4.Point = Geometry.SameLinePoint(w3, distanceRatio: len1 / len2, w4);
         }
 
         public override void PreserveRelation((Vertex v1, Vertex v2) movedEdge)
