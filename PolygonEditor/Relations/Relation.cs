@@ -8,6 +8,9 @@ namespace GraphEditor
 {
     abstract class Relation
     {
+        private static Queue<int> counter = new Queue<int>(Enumerable.Range(1, 99));
+        public readonly int RelationNumber;
+
         private event Action DeleteVertices;
 
         protected Vertex v1;
@@ -18,9 +21,10 @@ namespace GraphEditor
 
         public Relation(Vertex v1, Vertex v2, Vertex v3, Vertex v4)
         {
+            RelationNumber = counter.Dequeue();
+
             (this.v1, this.v2) = (v1, v2);
             (this.v3, this.v4) = (v3, v4);
-
 
             v1.ParentRelation = this;
             v2.ChildRelation = this;
@@ -66,5 +70,10 @@ namespace GraphEditor
         }
 
         public abstract void PreserveRelation((Vertex v1, Vertex v2) movedEdge);
+
+        ~Relation()
+        {
+            counter.Enqueue(RelationNumber);
+        }
     }
 }

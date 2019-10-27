@@ -8,10 +8,11 @@ namespace GraphEditor.Relations
 {
     class EqualLengthRelation : Relation
     {
-        private const double Eps = 1e-6;
+        public const double Eps = 1e-6;
 
         public EqualLengthRelation(Vertex v1, Vertex v2, Vertex v3, Vertex v4) : base(v1, v2, v3, v4)
         {
+            
             ImposeRelation();
         }
 

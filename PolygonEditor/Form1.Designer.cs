@@ -57,6 +57,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.equalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.perpendicularityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteRelationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bitMap)).BeginInit();
             this.menuControl.SuspendLayout();
@@ -244,7 +245,8 @@
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.equalityToolStripMenuItem,
-            this.perpendicularityToolStripMenuItem});
+            this.perpendicularityToolStripMenuItem,
+            this.deleteRelationToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             resources.ApplyResources(this.contextMenuStrip1, "contextMenuStrip1");
             // 
@@ -259,6 +261,12 @@
             this.perpendicularityToolStripMenuItem.Name = "perpendicularityToolStripMenuItem";
             resources.ApplyResources(this.perpendicularityToolStripMenuItem, "perpendicularityToolStripMenuItem");
             this.perpendicularityToolStripMenuItem.Click += new System.EventHandler(this.perpendicularityToolStripMenuItem_Click);
+            // 
+            // deleteRelationToolStripMenuItem
+            // 
+            resources.ApplyResources(this.deleteRelationToolStripMenuItem, "deleteRelationToolStripMenuItem");
+            this.deleteRelationToolStripMenuItem.Name = "deleteRelationToolStripMenuItem";
+            this.deleteRelationToolStripMenuItem.Click += new System.EventHandler(this.DeleteRelationToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -312,6 +320,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem equalityToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem perpendicularityToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteRelationToolStripMenuItem;
     }
 }
 

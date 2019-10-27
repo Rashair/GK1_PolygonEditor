@@ -168,11 +168,11 @@ namespace GraphEditor
                         }
                         else
                         {
-                            contextMenuStrip1.Show(bitMap, e.Location);
+                            OnRelationBoxShow();
+                            RelationGroupBox.Invalidate();
+                            bitMap.Invalidate();
                         }
-
-                        RelationGroupBox.Invalidate();
-                        bitMap.Invalidate();
+                        contextMenuStrip1.Show(bitMap, e.Location);
                     }
                     else if (RelationGroupBox.Visible)
                     {
@@ -390,6 +390,11 @@ namespace GraphEditor
         private void perpendicularityToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ChooseRelation(typeof(PerpendicularityRelation));
+        }
+
+        private void DeleteRelationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeleteRelationButton_Click(null, null);
         }
     }
 }

@@ -87,6 +87,8 @@ namespace GraphEditor
             {
                 graphics.DrawIcon(Properties.Resources.Perpendicularity481, rect);
             }
+            graphics.DrawString(v.ParentRelation.RelationNumber.ToString(), this.Font, Brushes.DarkBlue, 
+                rect.X + rect.Width, rect.Y + rect.Height);
         }
 
         private Color GetEdgeColor(Vertex v)
@@ -302,27 +304,14 @@ namespace GraphEditor
 
         private void ChooseRelation(Type chosenRelationType)
         {
-            if (selectedRelationEdgeVertex == null)
-            {
-                MessageBox.Show("Nieprzewidziany wyjątek", "Błąd", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.Close();
-            }
-
-            var chooseColor = SystemColors.GradientActiveCaption;
-            if (chosenRelationType == typeof(EqualLengthRelation))
-            {
-                equalityPictureBox.BackColor = chooseColor;
-                perpendicularityPictureBox.BackColor = SystemColors.ButtonHighlight;
-            }
-            else
-            {
-                perpendicularityPictureBox.BackColor = chooseColor;
-                equalityPictureBox.BackColor = SystemColors.ButtonHighlight;
-            }
-
             selectedRelationType = chosenRelationType;
+            OnRelationBoxShow();
             if (selectedRelationEdgeVertex.IsInParentRelation())
             {
+                if (contextMenuStrip1.Items[0].Enabled)
+                {
+                    NegateContextMenuItemsEnabled();
+                }
                 deleteRelationButton.Enabled = true;
                 if (selectedRelationEdgeVertex.ParentRelation.GetType() != selectedRelationType)
                 {
@@ -357,6 +346,24 @@ namespace GraphEditor
             }
         }
 
+        private void OnRelationBoxShow()
+        {
+            var chooseColor = SystemColors.GradientActiveCaption;
+            if (selectedRelationType == typeof(EqualLengthRelation))
+            {
+                equalityPictureBox.BackColor = chooseColor;
+                perpendicularityPictureBox.BackColor = SystemColors.ButtonHighlight;
+            }
+            else
+            {
+                perpendicularityPictureBox.BackColor = chooseColor;
+                equalityPictureBox.BackColor = SystemColors.ButtonHighlight;
+            }
+
+            deleteRelationButton.Enabled = false;
+            chooseRelationEdgeLabel.Visible = false;
+
+        }
 
         private void RelationBoxHide()
         {
@@ -370,8 +377,20 @@ namespace GraphEditor
         {
             deleteRelationButton.Enabled = false;
             chooseRelationEdgeLabel.Visible = false;
+            if (!contextMenuStrip1.Items[0].Enabled)
+            {
+                NegateContextMenuItemsEnabled();
+            }
+
             perpendicularityPictureBox.BackColor = SystemColors.ButtonHighlight;
             equalityPictureBox.BackColor = SystemColors.ButtonHighlight;
+        }
+
+        private void NegateContextMenuItemsEnabled()
+        {
+            contextMenuStrip1.Items[0].Enabled = !contextMenuStrip1.Items[0].Enabled;
+            contextMenuStrip1.Items[1].Enabled = !contextMenuStrip1.Items[1].Enabled;
+            contextMenuStrip1.Items[2].Enabled = !contextMenuStrip1.Items[2].Enabled;
         }
     }
 }
