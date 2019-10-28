@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GraphEditor
 {
@@ -10,7 +7,7 @@ namespace GraphEditor
     {
         public static void AppendRange<T>(this LinkedList<T> source, IEnumerable<T> items)
         {
-            if(source == null)
+            if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }

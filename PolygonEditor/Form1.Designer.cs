@@ -254,13 +254,13 @@
             // 
             this.equalityToolStripMenuItem.Name = "equalityToolStripMenuItem";
             resources.ApplyResources(this.equalityToolStripMenuItem, "equalityToolStripMenuItem");
-            this.equalityToolStripMenuItem.Click += new System.EventHandler(this.equalityToolStripMenuItem_Click);
+            this.equalityToolStripMenuItem.Click += new System.EventHandler(this.EqualityToolStripMenuItem_Click);
             // 
             // perpendicularityToolStripMenuItem
             // 
             this.perpendicularityToolStripMenuItem.Name = "perpendicularityToolStripMenuItem";
             resources.ApplyResources(this.perpendicularityToolStripMenuItem, "perpendicularityToolStripMenuItem");
-            this.perpendicularityToolStripMenuItem.Click += new System.EventHandler(this.perpendicularityToolStripMenuItem_Click);
+            this.perpendicularityToolStripMenuItem.Click += new System.EventHandler(this.PerpendicularityToolStripMenuItem_Click);
             // 
             // deleteRelationToolStripMenuItem
             // 

@@ -79,9 +79,9 @@ namespace GraphEditor
                 parentRelation.PreserveRelation(this);
             }
 
-            if(IsInChildRelation())
+            if (IsInChildRelation())
             {
-                childRelation.PreserveRelation(this);                
+                childRelation.PreserveRelation(this);
             }
         }
 

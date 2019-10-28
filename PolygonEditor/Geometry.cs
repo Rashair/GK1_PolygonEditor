@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using static System.Math;
+
 namespace GraphEditor
 {
     static class Geometry
@@ -11,6 +13,11 @@ namespace GraphEditor
         {
             return (p1.X - p2.X) * (p1.X - p2.X) + (p1.Y - p2.Y) * (p1.Y - p2.Y)
                 <= radius * radius;
+        }
+
+        public static Point Multiply(this Point p, double a)
+        {
+            return new Point((int)(p.X * a), (int)(p.Y * a));
         }
 
         public static double Magnitude(this Point p)
@@ -47,36 +54,46 @@ namespace GraphEditor
         }
 
 
+        public static double Atan2_2PI(int y, int x)
+        {
+            double value = Atan2(y, x) * 180 / PI;
+            return value < 0 ? value + 360 : value;
+        }
+
         public static double AngleBetweenVectors(Point w1, Point w2, Point v1, Point v2)
         {
             // Swap vectors if in wrong order
-            var det = CrossProduct(w2, v1);
-            if (det > 0)
+            var det = CrossProduct(w1, v1);
+            if (det < 0)
             {
-                (w1, w2) = (v1, v2);
+                (w1, w2, v1, v2) = (v1, v2, w1, w2);
             }
 
-            // Shift second vector to have origin in end of first
+            // Shift second vector to have origin in the beginning of first
             int xDiff = v1.X - w2.X;
             int yDiff = v1.Y - w2.Y;
             v1.Offset(xDiff, yDiff);
             v2.Offset(xDiff, yDiff);
             // Now w2 = v1
 
-
-            // Algorithm
-            Point a = v1.Difference(w1);
+            Point a = w1.Difference(w2);
             Point b = v1.Difference(v2);
 
-            double angle = Math.Acos(DotProduct(a, b) / (a.Magnitude() * b.Magnitude())) * (180 / Math.PI);
+            var cross = CrossProduct(a, b);
+            var dot = DotProduct(a, b);
+            var secondTheta = Atan2_2PI(cross, dot);
+            Console.WriteLine("Real degree: " + (secondTheta));
 
-            /// ----
-            double theta1 = Math.Atan2(a.Y, a.X) * 180 / Math.PI;
-            double theta2 = Math.Atan2(b.Y, b.X) * 180 / Math.PI;
-            angle = (180 + theta1 - theta2 + 360);
-            while (angle > 360) angle -= 360;
+            if (a.Equals(b) || a.Equals(b.Multiply(-1)))
+            {
+                return 0;
+            }
 
-            return angle;
+            var cosTheta = dot / (a.Magnitude() * b.Magnitude());
+            double theta = Math.Acos(cosTheta) * (180 / Math.PI);
+
+            // Does not work
+            return theta < 180 ? 180 - theta : theta;
         }
 
 

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Resources;
 using System.Windows.Forms;
 
 namespace GraphEditor
@@ -19,16 +18,15 @@ namespace GraphEditor
             canvas = new Bitmap(1920, 1024);
             Point center = new Point(bitMap.Size.Width / 2, bitMap.Size.Height / 2);
             vertexRectangle = new Rectangle() { Size = new Size(Vertex.radius, Vertex.radius) };
-            currentPolygon = new LinkedList<Vertex>(PolygonFactory.GetRegularPolygon(center, 4));
+            currentPolygon = new LinkedList<Vertex>(PolygonFactory.GetRegularPolygon(center, 6));
             polygons = new List<LinkedList<Vertex>> { currentPolygon };
 
             // Add initial relations
             Vertex v1 = currentPolygon.First.Value;
-            var v2 = v1.next;
-            var v3 = v2.next;
-            var v4 = v3.next;
-            //_ = new EqualLengthRelation(v1, v2, v3, v4);
-            //_ = new PerpendicularityRelation(v2, v3, v4, v1);
+            var v3 = v1.next.next;
+            _ = new EqualLengthRelation(v1, v3);
+            _ = new EqualLengthRelation(v3.next, v3.next.next);
+            //_ = new PerpendicularityRelation(v1.next, v3.next);
 
 
             centreXTextBox.Text = center.X.ToString();
@@ -133,8 +131,8 @@ namespace GraphEditor
             }
             else if (e.Button == MouseButtons.Right && Control.ModifierKeys == Keys.Control && currentPolygon != null)
             {
-                Vertex edgeVertex = GetEdgeVertex(e.Location, 2*eps)?.Value;
-                bool gotTwoDifferentEdges = selectedRelationEdgeVertex != null && edgeVertex != null && 
+                Vertex edgeVertex = GetEdgeVertex(e.Location, 2 * eps)?.Value;
+                bool gotTwoDifferentEdges = selectedRelationEdgeVertex != null && edgeVertex != null &&
                     selectedRelationEdgeVertex != edgeVertex;
                 bool inChoosingEdgeMode = gotTwoDifferentEdges && chooseRelationEdgeLabel.Visible;
                 if (inChoosingEdgeMode && !edgeVertex.IsInParentRelation())
@@ -358,6 +356,8 @@ namespace GraphEditor
             {
                 TurnOffAddPolygonMode();
             }
+
+            menuControl.SelectedTab = tab1;
             bitMap.Invalidate();
         }
 
@@ -368,6 +368,7 @@ namespace GraphEditor
 
         private void PerpendicularityPictureBox_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("Ta relacja nie zostala zaimplementowana", "Blad", MessageBoxButtons.OK, MessageBoxIcon.Error);
             ChooseRelation(typeof(PerpendicularityRelation));
         }
 
@@ -381,14 +382,14 @@ namespace GraphEditor
             bitMap.Invalidate();
         }
 
-        private void equalityToolStripMenuItem_Click(object sender, EventArgs e)
+        private void EqualityToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ChooseRelation(typeof(EqualLengthRelation));
+            EqualityPictureBox_Click(null, null);
         }
 
-        private void perpendicularityToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PerpendicularityToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ChooseRelation(typeof(PerpendicularityRelation));
+            PerpendicularityPictureBox_Click(null, null);
         }
 
         private void DeleteRelationToolStripMenuItem_Click(object sender, EventArgs e)

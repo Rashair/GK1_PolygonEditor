@@ -59,10 +59,6 @@ namespace GraphEditor
                 vertexRectangle.Location = v.Point + locationAdjustment;
                 canvasGraphics.FillEllipse(v == selectedVertex ? Brushes.Red : Brushes.Black,
                     vertexRectangle);
-                if (v.IsInParentRelation())
-                    canvasGraphics.DrawString("P", this.Font, Brushes.OrangeRed, v.Point);
-                else if (v.IsInChildRelation())
-                    canvasGraphics.DrawString("X", this.Font, Brushes.OrangeRed, v.Point);
             }
         }
 
@@ -119,10 +115,10 @@ namespace GraphEditor
         {
             var v1 = currentPolygon.First.Value;
             var det = Geometry.CrossProduct(v1, v1.next);
-            if(det < 0)
+            if (det < 0)
             {
                 currentPolygon.Reverse();
-                foreach(Vertex v in currentPolygon)
+                foreach (Vertex v in currentPolygon)
                 {
                     (v.next, v.prev) = (v.prev, v.next);
                 }
@@ -252,7 +248,7 @@ namespace GraphEditor
                 var vertex = currentNode.Value;
                 double d1 = Geometry.Distance(vertex.Point, position);
                 double d2 = Geometry.Distance(position, vertex.next.Point);
-                double d = Geometry.Distance(vertex.Point, vertex.next.Point); 
+                double d = Geometry.Distance(vertex.Point, vertex.next.Point);
                 if (Math.Abs(d1 + d2 - d) < edgeEps)
                 {
                     return (currentNode);

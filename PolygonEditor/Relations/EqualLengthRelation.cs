@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GraphEditor.Relations
 {
@@ -10,7 +6,7 @@ namespace GraphEditor.Relations
     {
         public EqualLengthRelation(Vertex v1, Vertex v3) : base(v1, v3)
         {
-            
+
             ImposeRelation();
         }
 
