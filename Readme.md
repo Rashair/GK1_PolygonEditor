@@ -2,6 +2,7 @@
  Nie można edytować wielokąta, gdy jesteśmy w karcie generowania
  Można dodawać wiele wielokątów równocześnie, ale tylko 1 edytować (będzie podświetlony)
  Do sterowania używamy myszki i ctrl/shift
+
 Opis relacji
  Równa długość 
 – Dla danej krawędzi E1 przesuwanie wierzchołka powoduje przesunięcie jednego z wierzchołków w drugiej krawędzi E2, po tej samej lini, bez zmiany kąta nachylenia;
@@ -17,9 +18,11 @@ Kliknij dwukrotnie prawym przyciskiem myszy na wybranej krawędzi.
  Wybieranie wierzchołka do zablokowania
 Przytrzymaj shift i kliknij prawym przyciskiem na wierzchołku – tak samo w celu odblokowania
 
+
  Wybieranie krawędzi (do relacji)
   	Przytrzymaj ctrl i kliknij prawym przyciskiem na wybranej krawędzi.
 	Po wybraniu relacji zrób to ponownie, aby dodać relację do krawędzi
+
 
  Tworzenie nowego wielokąta :
 Kliknij dwukrotnie lewym przyciskiem myszy na pustej przestrzeni. 
