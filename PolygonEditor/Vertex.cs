@@ -16,6 +16,8 @@ namespace GraphEditor
         public Vertex prev;
         public Vertex next;
 
+        public bool Locked {get; set;}
+
         public Vertex(Point point, Vertex prev = null, Vertex next = null)
         {
             this.point = point;

@@ -26,6 +26,16 @@ namespace GraphEditor
         private bool inAddPolygonMode;
         private LinkedList<Vertex> currentPolygon;
 
+        private Font lockedFont = new Font("Arial", 18, FontStyle.Bold);
+        private int lockedCount = 0;
+        private bool CurrentPolygonLocked
+        {
+            get
+            {
+                return lockedCount > 0;
+            }
+        }
+
         private bool mouseDownAndUpDetached;
 
 
@@ -59,6 +69,10 @@ namespace GraphEditor
                 vertexRectangle.Location = v.Point + locationAdjustment;
                 canvasGraphics.FillEllipse(v == selectedVertex ? Brushes.Red : Brushes.Black,
                     vertexRectangle);
+                if (v.Locked)
+                {
+                    canvasGraphics.DrawString("X", lockedFont, Brushes.Blue, vertexRectangle.Location);
+                }
             }
         }
 
@@ -172,14 +186,26 @@ namespace GraphEditor
                 currentPolygon = polygons.Last();
                 if (mouseDownAndUpDetached)
                 {
-                    bitMap.MouseDown += BitMap_MouseDown;
-                    bitMap.MouseUp += BitMap_MouseUp;
-                    mouseDownAndUpDetached = false;
+                    mouseDownUpAttach(true);
                 }
             }
             else
             {
                 currentPolygon = null;
+                mouseDownUpAttach(false);
+            }
+        }
+
+        private void mouseDownUpAttach(bool value)
+        {
+            if (value)
+            {
+                bitMap.MouseDown += BitMap_MouseDown;
+                bitMap.MouseUp += BitMap_MouseUp;
+                mouseDownAndUpDetached = false;
+            }
+            else
+            {
                 bitMap.MouseDown -= BitMap_MouseDown;
                 bitMap.MouseUp -= BitMap_MouseUp;
                 mouseDownAndUpDetached = true;
@@ -351,7 +377,12 @@ namespace GraphEditor
 
         private void AddRelationForSelected(Vertex v1, Vertex v3)
         {
-            if (selectedRelationType == typeof(EqualLengthRelation))
+            if(v1.Locked || v1.next.Locked || v3.Locked || v3.next.Locked)
+            {
+                MessageBox.Show("Nie można dodać relacji dla krawędzi z zablokowanym wierzchołkiem.", "Błąd", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            else if (selectedRelationType == typeof(EqualLengthRelation))
             {
                 _ = new EqualLengthRelation(v1, v3);
             }

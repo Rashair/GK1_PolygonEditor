@@ -20,7 +20,6 @@ namespace GraphEditor
             {
                 int x = (int)Math.Round(centre.X + radius * Math.Sin(i * angle));
                 int y = (int)Math.Round(centre.Y + radius * Math.Cos(i * angle));
-                Console.WriteLine($"{x} {y}");
                 result.Add(new Vertex(x, y));
             }
 

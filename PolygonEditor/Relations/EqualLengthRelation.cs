@@ -31,7 +31,21 @@ namespace GraphEditor.Relations
         {
             var (w1, w2, w3, w4) = GetMovedEdgeFirst(movedVertex);
             var (len1, len2) = CalculateLenghts(w1, w2, w3, w4);
-            w4.Point = Geometry.SameLinePoint(w3, distanceRatio: len1 / len2, w4);
+            if (w4.Locked)
+            {
+                if (!w3.Locked)
+                {
+                    w3.Point = Geometry.SameLinePoint(w4, distanceRatio: len1 / len2, w3);
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+            }
+            else
+            {
+                w4.Point = Geometry.SameLinePoint(w3, distanceRatio: len1 / len2, w4);
+            }
         }
 
         public override void PreserveRelation((Vertex v1, Vertex v2) movedEdge)

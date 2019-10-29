@@ -17,6 +17,7 @@
             {
                 components.Dispose();
 
+                lockedFont.Dispose();
                 canvas.Dispose();
             }
             base.Dispose(disposing);
@@ -58,6 +59,9 @@
             this.equalityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.perpendicularityToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteRelationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.lockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unlockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bitMap)).BeginInit();
             this.menuControl.SuspendLayout();
@@ -69,6 +73,7 @@
             this.tab2.SuspendLayout();
             this.newPolygonGroupBox.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -268,6 +273,26 @@
             this.deleteRelationToolStripMenuItem.Name = "deleteRelationToolStripMenuItem";
             this.deleteRelationToolStripMenuItem.Click += new System.EventHandler(this.DeleteRelationToolStripMenuItem_Click);
             // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lockToolStripMenuItem,
+            this.unlockToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            resources.ApplyResources(this.contextMenuStrip2, "contextMenuStrip2");
+            // 
+            // lockToolStripMenuItem
+            // 
+            this.lockToolStripMenuItem.Name = "lockToolStripMenuItem";
+            resources.ApplyResources(this.lockToolStripMenuItem, "lockToolStripMenuItem");
+            this.lockToolStripMenuItem.Click += new System.EventHandler(this.lockToolStripMenuItem_Click);
+            // 
+            // unlockToolStripMenuItem
+            // 
+            this.unlockToolStripMenuItem.Name = "unlockToolStripMenuItem";
+            resources.ApplyResources(this.unlockToolStripMenuItem, "unlockToolStripMenuItem");
+            this.unlockToolStripMenuItem.Click += new System.EventHandler(this.unlockToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
@@ -289,6 +314,7 @@
             this.newPolygonGroupBox.ResumeLayout(false);
             this.newPolygonGroupBox.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
+            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -321,6 +347,9 @@
         private System.Windows.Forms.ToolStripMenuItem equalityToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem perpendicularityToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteRelationToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem lockToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unlockToolStripMenuItem;
     }
 }
 

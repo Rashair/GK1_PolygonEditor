@@ -125,7 +125,6 @@ namespace GraphEditor
                         currentPolygon.Last.Value.next = vertex;
                         ReverseIfNotClockwise();
                         TurnOffAddPolygonMode();
-                        bitMap.Invalidate();
                     }
                 }
             }
@@ -178,11 +177,23 @@ namespace GraphEditor
                     }
                 }
             }
+            else if (e.Button == MouseButtons.Right && Control.ModifierKeys == Keys.Shift)
+            {
+                selectedVertex = GetVertexAtPosition(e.Location);
+                if (selectedVertex != null)
+                {
+                    mouseDownUpAttach(false);
+                    contextMenuStrip2.Show(bitMap, e.Location);
+                    unlockToolStripMenuItem.Enabled = selectedVertex.Locked;
+                    lockToolStripMenuItem.Enabled = !selectedVertex.Locked;
+                    bitMap.Invalidate();
+                }
+            }
         }
 
         private void BitMap_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && Control.ModifierKeys != Keys.Control)
+            if (e.Button == MouseButtons.Right && Control.ModifierKeys == Keys.None)
             {
                 previousMouseDownLocation = (Size)e.Location;
                 selectedVertex = GetVertexAtPosition(e.Location);
@@ -281,16 +292,24 @@ namespace GraphEditor
             }
             else
             {
-                if (selectedVertex != null && Control.MouseButtons == MouseButtons.Right)
+                if (selectedVertex != null && Control.MouseButtons == MouseButtons.Right && !selectedVertex.Locked)
                 {
+                    var oldLocation = selectedVertex.Point;
                     selectedVertex.Point += (Size)e.Location - previousMouseDownLocation;
                     previousMouseDownLocation = (Size)e.Location;
-
-                    selectedVertex.PreserveRelation();
+                    try
+                    {
+                        selectedVertex.PreserveRelation();
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        selectedVertex.Point = oldLocation;
+                    }
 
                     bitMap.Invalidate();
                 }
-                else if (selectedMoveEdgeVertex != null)
+                else if (selectedMoveEdgeVertex != null && 
+                    !selectedMoveEdgeVertex.Locked && !selectedMoveEdgeVertex.next.Locked)
                 {
                     var adjustment = (Size)e.Location - previousMouseDownLocation;
                     previousMouseDownLocation = (Size)e.Location;
@@ -298,7 +317,7 @@ namespace GraphEditor
                     selectedMoveEdgeVertex.next.Point += adjustment;
                     bitMap.Invalidate();
                 }
-                else if (isPolygonSelected)
+                else if (isPolygonSelected && !CurrentPolygonLocked)
                 {
                     var adjustment = (Size)e.Location - previousMouseDownLocation;
                     previousMouseDownLocation = (Size)e.Location;
@@ -368,7 +387,6 @@ namespace GraphEditor
 
         private void PerpendicularityPictureBox_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Ta relacja nie zostala zaimplementowana", "Blad", MessageBoxButtons.OK, MessageBoxIcon.Error);
             ChooseRelation(typeof(PerpendicularityRelation));
         }
 
@@ -395,6 +413,22 @@ namespace GraphEditor
         private void DeleteRelationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DeleteRelationButton_Click(null, null);
+        }
+
+        private void lockToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            selectedVertex.Locked = true;
+            lockedCount += 1;
+            mouseDownUpAttach(true);
+            bitMap.Invalidate();
+        }
+
+        private void unlockToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            selectedVertex.Locked = false;
+            lockedCount -= 1;
+            mouseDownUpAttach(true);
+            bitMap.Invalidate();
         }
     }
 }
