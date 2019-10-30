@@ -5,19 +5,19 @@ Założenia:
 
 Opis relacji
 - Równa długość 
-    – Dla danej krawędzi E1 przesuwanie wierzchołka powoduje przesunięcie jednego z wierzchołków w drugiej krawędzi E2, po tej samej lini, bez zmiany kąta nachylenia;
-    W przypadku zablokowania jednego wierzchołka będzie przesuwany drugi, w przypadku zablokowania obu, nie będzie się dało ruszyć również wierzchołków w relacji.
-    - Można bez obaw przesuwać krawędzie, bo nie wpływa na relację
+    – Dla danej krawędzi E1 przesuwanie wierzchołka powoduje przesunięcie jednego z wierzchołków w drugiej krawędzi E2, po tej samej lini, bez zmiany kąta nachylenia. <br>
+    W przypadku zablokowania jednego wierzchołka będzie przesuwany drugi, w przypadku zablokowania obu, nie będzie się dało ruszyć również wierzchołków w relacji. <br>
+    - Można bez obaw przesuwać krawędzie, bo nie wpływa na relację. <br.
 - Prostopadłość
-    – Relacja nie została zaimplementowana, ale można ją dodać, aby zobaczyć ikony. Nie powoduje jednak żadnych ograniczeń.
+    – Relacja nie została zaimplementowana, ale można ją dodać, aby zobaczyć ikony. Nie powoduje jednak żadnych ograniczeń. <br>
 
-Sterowanie:
-    - Przesuwanie/wybieranie wierzchołka / krawędzi / wielokąta 
-        Przytrzymaj prawy przycisk myszy na wybranym obiekcie i przesuń go w wybrane miejsce.
-    - Nowy wierzchołek w wielokącie 
-        Kliknij dwukrotnie prawym przyciskiem myszy na wybranej krawędzi.
-    - Wybieranie wierzchołka do zablokowania
-Przytrzymaj shift i kliknij prawym przyciskiem na wierzchołku – tak samo w celu odblokowania
+Sterowanie: <br>
+- Przesuwanie/wybieranie wierzchołka / krawędzi / wielokąta <br>
+        Przytrzymaj prawy przycisk myszy na wybranym obiekcie i przesuń go w wybrane miejsce. <br>
+- Nowy wierzchołek w wielokącie <br>
+        Kliknij dwukrotnie prawym przyciskiem myszy na wybranej krawędzi. <br>
+- Wybieranie wierzchołka do zablokowania <br>
+        Przytrzymaj shift i kliknij prawym przyciskiem na wierzchołku – tak samo w celu odblokowania <br>
 
 
 - Wybieranie krawędzi (do relacji)
@@ -26,14 +26,14 @@ Przytrzymaj shift i kliknij prawym przyciskiem na wierzchołku – tak samo w ce
 
 
 - Tworzenie nowego wielokąta :
-    Kliknij dwukrotnie lewym przyciskiem myszy na pustej przestrzeni. 
-    Potem dodawaj kolejne wierzchołki klikając lewym przyciskiem myszy.    	    
-    Gdy zamkniesz wielokąt zostanie on domyślnie wybrany.
-- Przerywanie dodawanie wielokąta
+    - Kliknij dwukrotnie lewym przyciskiem myszy na pustej przestrzeni. 
+    - Potem dodawaj kolejne wierzchołki klikając lewym przyciskiem myszy. 	    
+    - Gdy zamkniesz wielokąt zostanie on domyślnie wybrany.
+- Przerywanie dodawanie wielokąta <br>
     Kliknij dwukrotnie prawym przyciskiem myszy / naciśnij delete. 
-- Usuwanie wielokąta
+- Usuwanie wielokąta <br>
     Wciśnij delete na klawiaturze / wciśnij przycisk w interfejsie graficznym.
-- Wybieranie wielokąta
+- Wybieranie wielokąta <br>
     Kliknij na nim prawym przyciskiem myszy.
-- Dodawanie predefiniowanego wielokąta foremnego 
+- Dodawanie predefiniowanego wielokąta foremnego  <br>
     Kliknij na kartę po prawej stronie w menu
